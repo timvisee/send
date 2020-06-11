@@ -63,6 +63,22 @@ module.exports = function(app) {
       }
     };
 
+    csp.directives.connectSrc.push(
+      config.base_url.replace(/^https:\/\//, 'wss://')
+    );
+    if (config.fxa_csp_oauth_url != '') {
+      csp.directives.connectSrc.push(config.fxa_csp_oauth_url);
+    }
+    if (config.fxa_csp_content_url != '') {
+      csp.directives.connectSrc.push(config.fxa_csp_content_url);
+    }
+    if (config.fxa_csp_profile_url != '') {
+      csp.directives.connectSrc.push(config.fxa_csp_profile_url);
+    }
+    if (config.fxa_csp_profileimage_url != '') {
+      csp.directives.imgSrc.push(config.fxa_csp_profileimage_url);
+    }
+
     app.use(helmet.contentSecurityPolicy(csp));
   }
 
