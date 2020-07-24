@@ -179,6 +179,11 @@ const conf = convict({
     default: `${tmpdir()}${path.sep}send-${randomBytes(4).toString('hex')}`,
     env: 'FILE_DIR'
   },
+  fxa_required: {
+    format: Boolean,
+    default: false,
+    env: 'FXA_REQUIRED'
+  },
   fxa_url: {
     format: 'url',
     default: 'https://send-fxa.dev.lcip.org',

@@ -92,6 +92,10 @@ export default class User {
     return this.limits.MAX_DOWNLOADS;
   }
 
+  get loginRequired() {
+    return this.authConfig.fxa_required;
+  }
+
   async metricId() {
     return this.loggedIn ? hashId(this.info.uid) : undefined;
   }

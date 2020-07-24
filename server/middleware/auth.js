@@ -44,18 +44,34 @@ module.exports = {
   },
   owner: async function(req, res, next) {
     const id = req.params.id;
-    const ownerToken = req.body.owner_token;
-    if (id && ownerToken) {
+    if (id) {
       try {
         req.meta = await storage.metadata(id);
         if (!req.meta) {
           return res.sendStatus(404);
         }
-        const metaOwner = Buffer.from(req.meta.owner, 'utf8');
-        const owner = Buffer.from(ownerToken, 'utf8');
-        assert(metaOwner.length > 0);
-        assert(metaOwner.length === owner.length);
-        req.authorized = crypto.timingSafeEqual(metaOwner, owner);
+
+        const ownerToken = req.body.owner_token;
+        if (ownerToken) {
+          const metaOwner = Buffer.from(req.meta.owner, 'utf8');
+          const owner = Buffer.from(ownerToken, 'utf8');
+          assert(metaOwner.length > 0);
+          assert(metaOwner.length === owner.length);
+          req.authorized = crypto.timingSafeEqual(metaOwner, owner);
+        } else {
+          // re-try for FxA OAuth token...
+          const authHeader = req.header('Authorization');
+          if (authHeader && /^Bearer\s/i.test(authHeader)) {
+            const token = authHeader.split(' ')[1];
+            req.user = await fxa.verify(token);
+          }
+
+          if (req.user && req.meta.auth) {
+            const metaAuth = Buffer.from(req.meta.auth, 'utf8');
+            const userAuth = Buffer.from(req.user, 'utf8');
+            req.authorized = crypto.timingSafeEqual(metaAuth, userAuth);
+          }
+        }
       } catch (e) {
         req.authorized = false;
       }

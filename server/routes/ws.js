@@ -47,7 +47,8 @@ module.exports = function(ws, req) {
         !auth ||
         timeLimit <= 0 ||
         timeLimit > maxExpireSeconds ||
-        dlimit > maxDownloads
+        dlimit > maxDownloads ||
+        (config.fxa_required && !user)
       ) {
         ws.send(
           JSON.stringify({
