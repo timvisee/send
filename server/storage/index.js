@@ -32,19 +32,31 @@ class DB {
     return Math.ceil(result) * 1000;
   }
 
-  async getPrefixedId(id) {
-    const prefix = await this.redis.hgetAsync(id, 'prefix');
-    return `${prefix}-${id}`;
+  async getPrefixedInfo(id) {
+    const [prefix, dead, flagged] = await this.redis.hmgetAsync(
+      id,
+      'prefix',
+      'dead',
+      'flagged'
+    );
+    return {
+      filePath: `${prefix}-${id}`,
+      flagged,
+      dead
+    };
   }
 
   async length(id) {
-    const filePath = await this.getPrefixedId(id);
+    const { filePath } = await this.getPrefixedInfo(id);
     return this.storage.length(filePath);
   }
 
   async get(id) {
-    const filePath = await this.getPrefixedId(id);
-    return this.storage.getStream(filePath);
+    const info = await this.getPrefixedInfo(id);
+    if (info.dead || info.flagged) {
+      throw new Error(info.flagged ? 'flagged' : 'dead');
+    }
+    return this.storage.getStream(info.filePath);
   }
 
   async set(id, file, meta, expireSeconds = config.default_expire_seconds) {
@@ -66,8 +78,19 @@ class DB {
     this.redis.hincrby(id, key, increment);
   }
 
+  async kill(id) {
+    const { filePath } = await this.getPrefixedInfo(id);
+    this.storage.del(filePath);
+    this.redis.hset(id, 'dead', 1);
+  }
+
+  async flag(id, key) {
+    await this.kill(id);
+    this.redis.hmset(id, { flagged: 1, key });
+  }
+
   async del(id) {
-    const filePath = await this.getPrefixedId(id);
+    const { filePath } = await this.getPrefixedInfo(id);
     this.storage.del(filePath);
     this.redis.del(id);
   }
