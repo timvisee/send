@@ -238,7 +238,8 @@ export default function(state, emitter) {
     const links = openLinksInNewTab();
     try {
       const dl = state.transfer.download({
-        stream: state.capabilities.streamDownload
+        stream: state.capabilities.streamDownload,
+        storage: state.storage
       });
       render();
       await dl;
@@ -252,7 +253,9 @@ export default function(state, emitter) {
       } else {
         // eslint-disable-next-line no-console
         state.transfer = null;
-        const location = err.message === '404' ? '/404' : '/error';
+        const location = ['404', '403'].includes(err.message)
+          ? '/404'
+          : '/error';
         if (location === '/error') {
           state.sentry.withScope(scope => {
             scope.setExtra('duration', err.duration);

@@ -115,11 +115,23 @@ module.exports = function(app) {
   app.get('/app.webmanifest', language, require('./webmanifest'));
   app.get(`/download/:id${ID_REGEX}`, language, pages.download);
   app.get('/unsupported/:reason', language, pages.unsupported);
-  app.get(`/api/download/:id${ID_REGEX}`, auth.owner, require('./download'));
+  app.get(`/api/download/token/:id${ID_REGEX}`, auth.hmac, require('./token'));
+  app.get(
+    `/api/download/:id${ID_REGEX}`,
+    auth.owner,
+    auth.dlToken,
+    require('./download')
+  );
   app.get(
     `/api/download/blob/:id${ID_REGEX}`,
     auth.owner,
+    auth.dlToken,
     require('./download')
+  );
+  app.post(
+    `/api/download/done/:id${ID_REGEX}`,
+    auth.dlToken,
+    require('./done.js')
   );
   app.get(`/api/exists/:id${ID_REGEX}`, require('./exists'));
   app.get(`/api/metadata/:id${ID_REGEX}`, auth.owner, require('./metadata'));

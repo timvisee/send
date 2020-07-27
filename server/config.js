@@ -73,10 +73,20 @@ const conf = convict({
     default: 1,
     env: 'DEFAULT_DOWNLOADS'
   },
+  anon_max_expire_seconds: {
+    format: Number,
+    default: 86400,
+    env: 'ANON_MAX_EXPIRE_SECONDS'
+  },
   max_downloads: {
     format: Number,
     default: 100,
     env: 'MAX_DOWNLOADS'
+  },
+  anon_max_downloads: {
+    format: Number,
+    default: 20,
+    env: 'ANON_MAX_DOWNLOADS'
   },
   max_files_per_archive: {
     format: Number,
@@ -90,7 +100,7 @@ const conf = convict({
   },
   redis_host: {
     format: String,
-    default: 'localhost',
+    default: 'mock',
     env: 'REDIS_HOST'
   },
   redis_port: {
