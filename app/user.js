@@ -93,7 +93,7 @@ export default class User {
   }
 
   get loginRequired() {
-    return this.authConfig.fxa_required;
+    return this.authConfig && this.authConfig.fxa_required;
   }
 
   async metricId() {
