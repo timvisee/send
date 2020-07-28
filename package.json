@@ -77,7 +77,6 @@
     "content-disposition": "^0.5.4",
     "copy-webpack-plugin": "^5.1.2",
     "core-js": "^3.21.1",
-    "crc": "^3.8.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.6.0",
     "css-mqpacker": "^7.0.0",
