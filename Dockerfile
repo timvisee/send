@@ -6,13 +6,13 @@
 
 
 # Build project
-FROM node:12 AS builder
+FROM node:15.5.1-alpine AS builder
 RUN set -x \
     # Add user
     && addgroup --gid 10001 app \
     && adduser --disabled-password \
         --gecos '' \
-        --gid 10001 \
+        --ingroup app \
         --home /app \
         --uid 10001 \
         app
@@ -26,19 +26,17 @@ RUN set -x \
 
 
 # Main image
-FROM node:12-slim
+FROM node:15.5.1-alpine
 RUN set -x \
     # Add user
     && addgroup --gid 10001 app \
     && adduser --disabled-password \
         --gecos '' \
-        --gid 10001 \
+        --ingroup app \
         --home /app \
         --uid 10001 \
         app
-RUN apt-get update && apt-get -y install \
-    git-core \
-    && rm -rf /var/lib/apt/lists/*
+
 USER app
 WORKDIR /app
 COPY --chown=app:app package*.json ./
