@@ -18,7 +18,7 @@ module.exports = async function(req, res) {
   const meta = {
     owner,
     metadata,
-    auth: auth.split(' ')[1],
+    auth: req.user || auth.split(' ')[1],
     nonce: crypto.randomBytes(16).toString('base64')
   };
 

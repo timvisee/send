@@ -13,7 +13,7 @@ function id(user, kid) {
 
 module.exports = {
   async get(req, res) {
-    const kid = req.params.id;
+    const kid = req.params.kid;
     try {
       const fileId = id(req.user, kid);
       const contentLength = await storage.length(fileId);
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   async post(req, res) {
-    const kid = req.params.id;
+    const kid = req.params.kid;
     try {
       const limiter = new Limiter(1024 * 1024 * 10);
       const fileStream = req.pipe(limiter);
