@@ -1,3 +1,4 @@
+const fs = require('fs');
 const convict = require('convict');
 const convict_format_with_validator = require('convict-format-with-validator');
 const { tmpdir } = require('os');
@@ -306,6 +307,19 @@ const conf = convict({
     }
   }
 });
+
+// handle configuration files.  you can specify a CSV list of configuration
+// files to process, which will be overlayed in order, in the CONFIG_FILES
+// environment variable.
+
+let envConfig = path.join(__dirname, `${conf.get('env')}.json`);
+envConfig = `${envConfig},/etc/mozilla/send/${conf.get('env')}.json,${process
+  .env.CONFIG_FILES || ''}`;
+const files = envConfig
+  .split(',')
+  .map(path => path.trim())
+  .filter(path => path.length > 0 && fs.existsSync(path));
+conf.loadFile(files);
 
 // Perform validation
 conf.validate({ allowed: 'strict' });
