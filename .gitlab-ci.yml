@@ -1,25 +1,28 @@
-image: "node:15-slim"
+variables:
+  MAIN_BRANCH: "enote"
+  DOCKER_IMAGE_URI: "enote/mozilla-send"
+  DOCKER_CONTEXT_NAME: "enote-mozilla-send"
 
 stages:
   - test
   - artifact
   - release
 
-before_script:
-  # Install dependencies
-  - apt-get update
-  - apt-get install -y git python3 build-essential libxtst6
-
-  # Prepare Chrome for puppeteer
-  - apt-get install -y wget gnupg
-  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-  - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-  - apt-get update
-  - apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 --no-install-recommends
-
 # Build Send, run npm tests
 test:
   stage: test
+  image: "node:15-slim"
+  before_script:
+    # Install dependencies
+    - apt-get update
+    - apt-get install -y git python3 build-essential libxtst6
+
+    # Prepare Chrome for puppeteer
+    - apt-get install -y wget gnupg
+    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 --no-install-recommends
   script:
     - npm ci
     - npm run lint
@@ -33,8 +36,8 @@ artifact-docker:
   services:
     - docker:dind
   variables:
-    IMG_FILE: "send:git-$CI_COMMIT_SHORT_SHA.tar"
-    IMG_NAME: "send:git-$CI_COMMIT_SHORT_SHA"
+    IMG_FILE: "${DOCKER_CONTEXT_NAME}.git-$CI_COMMIT_SHORT_SHA.tar"
+    IMG_NAME: "${DOCKER_IMAGE_URI}:git-$CI_COMMIT_SHORT_SHA"
   before_script: []
   script:
     - docker build -t $IMG_NAME .
@@ -45,8 +48,8 @@ artifact-docker:
       - $IMG_FILE
     expire_in: 1 week
 
-# Release public Docker image for the master branch
-release-docker-master:
+# Release public Docker image for the main branch
+release-docker-main:
   stage: release
   image: docker:latest
   dependencies:
@@ -54,15 +57,15 @@ release-docker-master:
   services:
     - docker:dind
   only:
-    - master
+    - ${MAIN_BRANCH}
   variables:
-    IMG_IMPORT_FILE: "send:git-$CI_COMMIT_SHORT_SHA.tar"
-    IMG_IMPORT_NAME: "send:git-$CI_COMMIT_SHORT_SHA"
-    IMG_NAME: "registry.gitlab.com/timvisee/send:master-$CI_COMMIT_SHORT_SHA"
+    IMG_IMPORT_FILE: "${DOCKER_CONTEXT_NAME}.git-$CI_COMMIT_SHORT_SHA.tar"
+    IMG_IMPORT_NAME: "${DOCKER_IMAGE_URI}:git-$CI_COMMIT_SHORT_SHA"
+    IMG_NAME: "${CI_REGISTRY_IMAGE}/${DOCKER_IMAGE_URI}:${MAIN_BRANCH}-$CI_COMMIT_SHORT_SHA"
   before_script: []
   script:
     # Login in to registry
-    - 'docker login registry.gitlab.com -u $DOCKER_USER -p $DOCKER_PASS'
+    - 'docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD'
 
     # Load existing, retag for new image images
     - docker image load -i $IMG_IMPORT_FILE
@@ -84,14 +87,14 @@ release-docker:
   only:
     - /^v(\d+\.)*\d+$/
   variables:
-    IMG_IMPORT_FILE: "send:git-$CI_COMMIT_SHORT_SHA.tar"
-    IMG_IMPORT_NAME: "send:git-$CI_COMMIT_SHORT_SHA"
-    IMG_NAME: "registry.gitlab.com/timvisee/send:$CI_COMMIT_REF_NAME"
-    IMG_NAME_LATEST: "registry.gitlab.com/timvisee/send:latest"
+    IMG_IMPORT_FILE: "${DOCKER_CONTEXT_NAME}.git-$CI_COMMIT_SHORT_SHA.tar"
+    IMG_IMPORT_NAME: "${DOCKER_IMAGE_URI}:git-$CI_COMMIT_SHORT_SHA"
+    IMG_NAME: "${CI_REGISTRY_IMAGE}/${DOCKER_IMAGE_URI}:$CI_COMMIT_REF_NAME"
+    IMG_NAME_LATEST: "${CI_REGISTRY_IMAGE}/${DOCKER_IMAGE_URI}:latest"
   before_script: []
   script:
     # Login in to registry
-    - 'docker login registry.gitlab.com -u $DOCKER_USER -p $DOCKER_PASS'
+    - 'docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD'
 
     # Load existing, retag for new image images
     - docker image load -i $IMG_IMPORT_FILE
