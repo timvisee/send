@@ -4,14 +4,40 @@ variables:
   DOCKER_CONTEXT_NAME: "enote-mozilla-send"
 
 stages:
+  - prepare
   - test
-  - artifact
-  - release
+  - docker
+
+.prepare-template:
+  stage: prepare
+  image: bitnami/git
+  artifacts:
+    reports:
+      dotenv: docker-variables.env
+
+prepare-branch:
+  extends: .prepare-template
+  script:
+    - set -e
+    - 'echo "CI triggered by: $CI_PIPELINE_SOURCE"'
+    - echo "APP_VERSION_TAG=$(git describe --always --tag HEAD)" > docker-variables.env
+  rules:
+    - if: '$CI_COMMIT_REF_NAME != $CI_COMMIT_TAG'
+
+prepare-tag:
+  extends: .prepare-template
+  script:
+    - set -e
+    - 'echo "CI triggered by: $CI_PIPELINE_SOURCE"'
+    - git tag --delete "$CI_COMMIT_TAG"
+    - echo "APP_VERSION_TAG=$(git describe --always --tag HEAD)" > docker-variables.env
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == $CI_COMMIT_TAG'
 
 # Build Send, run npm tests
 test:
   stage: test
-  image: "node:15-slim"
+  image: "node:16"
   before_script:
     # Install dependencies
     - apt-get update
@@ -28,81 +54,41 @@ test:
     - npm run lint
     - npm test
 
-# Build Docker image, export Docker image artifact
-artifact-docker:
-  stage: artifact
-  image: docker:latest
-  needs: []
-  services:
-    - docker:dind
+.docker-template:
+  stage: docker
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script: |
+    mkdir -p /kaniko/.docker
+    echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    if [ -n "$FROM_TAG" ]; then
+      echo "Re-tagging Docker image from $FROM_TAG to $TAG"
+      echo "FROM $CI_REGISTRY_IMAGE:$FROM_TAG" | /kaniko/executor --context $CI_PROJECT_DIR --dockerfile /dev/stdin --destination $CI_REGISTRY_IMAGE:$TAG $KANIKO_ARGS
+    else
+      echo "Building Docker image for tag $TAG"
+      /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$TAG $KANIKO_ARGS
+    fi
+
+docker-retag:
+  extends: .docker-template
   variables:
-    IMG_FILE: "${DOCKER_CONTEXT_NAME}.git-$CI_COMMIT_SHORT_SHA.tar"
-    IMG_NAME: "${DOCKER_IMAGE_URI}:git-$CI_COMMIT_SHORT_SHA"
-  before_script: []
-  script:
-    - docker build -t $IMG_NAME .
-    - docker image save -o $IMG_FILE $IMG_NAME
-  artifacts:
-    name: artifact-docker
-    paths:
-      - $IMG_FILE
-    expire_in: 1 week
+    TAG: $CI_COMMIT_TAG
+    FROM_TAG: $APP_VERSION_TAG
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME == $CI_COMMIT_TAG && $CI_COMMIT_TAG =~ /^v[0-9]\.[0-9\.]+/'
 
-# Release public Docker image for the main branch
-release-docker-main:
-  stage: release
-  image: docker:latest
-  dependencies:
-    - artifact-docker
-  services:
-    - docker:dind
-  only:
-    - ${MAIN_BRANCH}
+docker-main:
+  extends: .docker-template
   variables:
-    IMG_IMPORT_FILE: "${DOCKER_CONTEXT_NAME}.git-$CI_COMMIT_SHORT_SHA.tar"
-    IMG_IMPORT_NAME: "${DOCKER_IMAGE_URI}:git-$CI_COMMIT_SHORT_SHA"
-    IMG_NAME: "${CI_REGISTRY_IMAGE}/${DOCKER_IMAGE_URI}:${MAIN_BRANCH}-$CI_COMMIT_SHORT_SHA"
-  before_script: []
-  script:
-    # Login in to registry
-    - 'docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD'
+    TAG: $APP_VERSION_TAG
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME == "$MAIN_BRANCH"'
 
-    # Load existing, retag for new image images
-    - docker image load -i $IMG_IMPORT_FILE
-    - docker tag $IMG_IMPORT_NAME $IMG_NAME
-
-    # Publish tagged image
-    - docker push $IMG_NAME
-
-    - 'echo "Docker image artifact published, available as:" && echo "  docker pull $IMG_NAME"'
-
-# Release public Docker image for a version tag
-release-docker:
-  stage: release
-  image: docker:latest
-  dependencies:
-    - artifact-docker
-  services:
-    - docker:dind
-  only:
-    - /^v(\d+\.)*\d+$/
+docker-no-push:
+  extends: .docker-template
   variables:
-    IMG_IMPORT_FILE: "${DOCKER_CONTEXT_NAME}.git-$CI_COMMIT_SHORT_SHA.tar"
-    IMG_IMPORT_NAME: "${DOCKER_IMAGE_URI}:git-$CI_COMMIT_SHORT_SHA"
-    IMG_NAME: "${CI_REGISTRY_IMAGE}/${DOCKER_IMAGE_URI}:$CI_COMMIT_REF_NAME"
-    IMG_NAME_LATEST: "${CI_REGISTRY_IMAGE}/${DOCKER_IMAGE_URI}:latest"
-  before_script: []
-  script:
-    # Login in to registry
-    - 'docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD'
-
-    # Load existing, retag for new image images
-    - docker image load -i $IMG_IMPORT_FILE
-    - docker tag $IMG_IMPORT_NAME $IMG_NAME
-    - docker tag $IMG_IMPORT_NAME $IMG_NAME_LATEST
-
-    # Publish tagged image
-    - docker push $IMG_NAME
-    - docker push $IMG_NAME_LATEST
-
-    - 'echo "Docker image artifact published, available as:" && echo "  docker pull $IMG_NAME_LATEST" && echo "  docker pull $IMG_NAME"'
+    TAG: "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    KANIKO_ARGS: "--no-push"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME != "$MAIN_BRANCH"'
