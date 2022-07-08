@@ -8,6 +8,12 @@ stages:
   - test
   - docker
 
+cache:
+  key: mozilla-send-npm
+  policy: pull-push
+  paths:
+    - .npm/
+
 .prepare-template:
   stage: prepare
   image: bitnami/git
@@ -50,7 +56,7 @@ test:
     - apt-get update
     - apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 libx11-xcb1 --no-install-recommends
   script:
-    - npm ci
+    - npm ci --cache .npm --prefer-offline
     - npm run lint
     - npm test
 
