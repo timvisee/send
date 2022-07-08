@@ -1,5 +1,4 @@
 variables:
-  MAIN_BRANCH: "enote"
   DOCKER_IMAGE_URI: "enote/mozilla-send"
   DOCKER_CONTEXT_NAME: "enote-mozilla-send"
 
@@ -89,7 +88,7 @@ docker-main:
   variables:
     TAG: $APP_VERSION_TAG
   rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME == "$MAIN_BRANCH"'
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME == "$CI_DEFAULT_BRANCH"'
 
 docker-no-push:
   extends: .docker-template
@@ -97,4 +96,4 @@ docker-no-push:
     TAG: "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     KANIKO_ARGS: "--no-push"
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME != "$MAIN_BRANCH"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME != "$CI_DEFAULT_BRANCH"'
