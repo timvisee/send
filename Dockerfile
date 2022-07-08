@@ -30,7 +30,7 @@ WORKDIR /app
 
 RUN set -x \
     # Build
-    && PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm ci \
+    && PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm ci --cache .npm --prefer-offline \
     && npm run build
 
 # Main image
@@ -61,13 +61,12 @@ COPY --chown=app:app common common
 COPY --chown=app:app public/locales public/locales
 COPY --chown=app:app server server
 COPY --chown=app:app --from=builder /app/dist dist
+COPY --chown=app:app --from=builder /app/.npm .npm
 
-RUN npm ci --production && npm cache clean --force
+RUN npm ci --production --cache .npm --prefer-offline && npm cache clean --force --cache .npm
 RUN mkdir -p /app/.config/configstore
 RUN ln -s dist/version.json version.json
 
 ENV PORT=1443
-
-EXPOSE ${PORT}
 
 CMD ["node", "server/bin/prod.js"]
