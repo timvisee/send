@@ -6,6 +6,7 @@ stages:
   - prepare
   - test
   - docker
+  - deploy
 
 cache:
   key: mozilla-send-npm
