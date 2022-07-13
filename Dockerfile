@@ -5,7 +5,11 @@
 ##
 
 # Build project
-FROM node:16.13-alpine3.13 AS builder
+FROM node:18.5-alpine3.15 AS builder
+
+ENV npm_config_audit=false
+ENV npm_config_fund=false
+ENV npm_config_update_notifier=false
 
 RUN set -x \
   # Change node uid/gid
@@ -34,7 +38,11 @@ RUN set -x \
     && npm run build
 
 # Main image
-FROM node:16.13-alpine3.13
+FROM node:18.5-alpine3.15
+
+ENV npm_config_audit=false
+ENV npm_config_fund=false
+ENV npm_config_update_notifier=false
 
 RUN set -x \
   # Change node uid/gid
@@ -63,7 +71,7 @@ COPY --chown=app:app server server
 COPY --chown=app:app --from=builder /app/dist dist
 COPY --chown=app:app --from=builder /app/.npm .npm
 
-RUN npm ci --production --cache .npm --prefer-offline && npm cache clean --force --cache .npm
+RUN npm ci --omit=dev --cache .npm --prefer-offline && npm cache clean --force --cache .npm
 RUN mkdir -p /app/.config/configstore
 RUN ln -s dist/version.json version.json
 
