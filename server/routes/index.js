@@ -39,7 +39,6 @@ module.exports = function(app) {
           function(req) {
             const baseUrl = config.deriveBaseUrl(req);
             const r = baseUrl.replace(/^http(s?):\/\//, 'ws$1://');
-            console.log([baseUrl, r]);
             return r;
           }
         ],
