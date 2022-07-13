@@ -1,4 +1,5 @@
 variables:
+  APP: "user-files"
   DOCKER_IMAGE_URI: "enote/mozilla-send"
   DOCKER_CONTEXT_NAME: "enote-mozilla-send"
 
