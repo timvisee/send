@@ -96,3 +96,55 @@ docker-no-push:
     KANIKO_ARGS: "--no-push"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+
+.update-helm-charts-template:
+  stage: deploy
+  image:
+    name: python:3-slim
+    entrypoint: ["bash"]
+  script: |
+    set -e
+    apt-get update
+    apt-get -q -y install gettext-base git
+    pip3 --disable-pip-version-check install semver
+
+    # setup git
+    git clone --single-branch --branch master --depth 10 https://$GITHUB_PERSONAL_TOKEN@github.com/eNote-GmbH/helm-charts.git /tmp/helm-charts
+    cd /tmp/helm-charts
+    git config credential.helper 'cache --timeout=120'
+    git config user.email "ci-cd@enote.com"
+    git config user.name "enotecicd"
+
+    # update Docker image to use...
+    envsubst '${TAG}' < "$ENV/$APP/values-template.yaml" > "$ENV/$APP/values.yaml"
+    git add "$ENV/$APP/values.yaml"
+
+    # ensure that we have some change, if not - error out...
+    git commit --dry-run
+
+    # update the Helm Chart metadata
+    chart_version="$(sed -n -E 's/^version.\s+//p' "$ENV/$APP/Chart.yaml")"
+    chart_version="$(python3 -c 'import semver; ver = semver.VersionInfo.parse("'"${chart_version}"'"); print(ver.bump_patch())')"
+    sed -i -E 's/^(version.\s+).*/\1'"${chart_version}"'/; s/^(appVersion.\s*).*/\1'"${TAG}"'/' "$ENV/$APP/Chart.yaml"
+    git add "$ENV/$APP/Chart.yaml"
+
+    # finally update the repo
+    git commit -m "chore(gitlab-ci): update image tag to $TAG for $ENV/$APP"
+    git pull --rebase=true origin master
+    git push -q https://$GITHUB_PERSONAL_TOKEN@github.com/eNote-GmbH/helm-charts.git master
+
+deploy-dev:
+  extends: .update-helm-charts-template
+  variables:
+    ENV: dev
+    TAG: $APP_VERSION_TAG
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_NAME != $CI_COMMIT_TAG'
+
+deploy-stage:
+  extends: .update-helm-charts-template
+  variables:
+    ENV: staging
+    TAG: $CI_COMMIT_TAG
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_REF_NAME == $CI_COMMIT_TAG && $CI_COMMIT_TAG =~ /^v[0-9]\.[0-9\.]+/'
