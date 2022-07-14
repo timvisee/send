@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const mozlog = require('../log');
 const storage = require('../storage');
 const fxa = require('../fxa');
-const log = mozlog('send.download');
+const log = mozlog('send.auth');
 
 module.exports = {
   hmac: async function(req, res, next) {
@@ -11,7 +11,7 @@ module.exports = {
     const authHeader = req.header('Authorization');
     if (id && authHeader) {
       try {
-        const auth = req.header('Authorization').split(' ')[1];
+        const auth = authHeader.split(' ')[1];
         const meta = await storage.metadata(id);
         if (!meta) {
           return res.sendStatus(404);
@@ -33,6 +33,7 @@ module.exports = {
           req.authorized = false;
         }
       } catch (e) {
+        log.warn('hmac', e);
         req.authorized = false;
       }
     }
@@ -66,13 +67,14 @@ module.exports = {
             req.user = await fxa.verify(token);
           }
 
-          if (req.user && req.meta.auth) {
-            const metaAuth = Buffer.from(req.meta.auth, 'utf8');
+          if (req.user && req.meta.user) {
+            const metaAuth = Buffer.from(req.meta.user, 'utf8');
             const userAuth = Buffer.from(req.user, 'utf8');
             req.authorized = crypto.timingSafeEqual(metaAuth, userAuth);
           }
         }
       } catch (e) {
+        log.warn('owner', e);
         req.authorized = false;
       }
     }
@@ -94,7 +96,7 @@ module.exports = {
     }
 
     if (!req.user) {
-      log.warn('Invalid or expired OAuth token');
+      log.warn('fxa', { msg: 'Token invalid or expired' });
       return res.sendStatus(401);
     }
 
@@ -103,14 +105,14 @@ module.exports = {
     if (id) {
       // a request to a file...
       const meta = await storage.metadata(id);
-      if (!meta || !meta.auth) {
+      if (!meta || !meta.user) {
         return res.sendStatus(404);
       }
 
-      const metaAuth = Buffer.from(meta.auth, 'utf8');
+      const metaAuth = Buffer.from(meta.user, 'utf8');
       const userAuth = Buffer.from(req.user, 'utf8');
       if (!crypto.timingSafeEqual(metaAuth, userAuth)) {
-        log.warn('User not allowed to view file');
+        log.warn('fxa', { msg: 'User not allowed to view file' });
         return res.sendStatus(403);
       }
 
