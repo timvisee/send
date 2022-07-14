@@ -84,9 +84,13 @@ module.exports = {
   },
   fxa: async function(req, res, next) {
     const authHeader = req.header('Authorization');
-    if (authHeader && /^Bearer\s/i.test(authHeader)) {
-      const token = authHeader.split(' ')[1];
-      req.user = await fxa.verify(token);
+    if (authHeader) {
+      const [auth_type, token] = authHeader.split(' ', 2);
+      if (auth_type == 'Bearer') {
+        req.user = await fxa.verify(token);
+      } else if (auth_type == 'send-v1') {
+        return await this.hmac(req, res, next);
+      }
     }
 
     if (!req.user) {
