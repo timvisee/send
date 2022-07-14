@@ -168,6 +168,9 @@ export async function deriveFileListKey(ikm) {
 }
 
 export async function getFileListKey(storage, bundle) {
+  if (!bundle && AUTH_CONFIG.jwe_required === false) {
+    return 'MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA';
+  }
   const jwks = await decryptBundle(storage, bundle);
   const jwk = jwks[AUTH_CONFIG.key_scope];
   return deriveFileListKey(jwk.k);

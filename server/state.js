@@ -18,9 +18,17 @@ module.exports = async function(req) {
       authConfig = await getFxaConfig();
       authConfig.client_id = config.fxa_client_id;
       authConfig.fxa_required = config.fxa_required;
+      authConfig.jwe_required = config.jwe_required;
     } catch (e) {
-      log.warn('fxa_required is set but no config was found', e);
-      throw e;
+      if (config.fxa_required) {
+        log.error(
+          'fxa_client_id + fxa_required are set but no config was found',
+          e
+        );
+        throw e;
+      } else {
+        log.warn('fxa_client_id is set but no config was found', e);
+      }
     }
   }
   const prefs = {};

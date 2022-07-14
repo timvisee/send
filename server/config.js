@@ -194,6 +194,11 @@ const conf = convict({
     default: false,
     env: 'FXA_REQUIRED'
   },
+  jwe_required: {
+    format: Boolean,
+    default: true,
+    env: 'JWE_REQUIRED'
+  },
   fxa_url: {
     format: 'url',
     default: 'https://send-fxa.dev.lcip.org',
