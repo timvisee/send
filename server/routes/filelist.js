@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const config = require('../config');
 const storage = require('../storage');
 const Limiter = require('../limiter');
+const mozlog = require('../log');
+const log = mozlog('send.filelist');
 
 function id(user, kid) {
   const sha = crypto.createHash('sha256');
@@ -23,6 +25,7 @@ module.exports = {
       });
       stream.pipe(res);
     } catch (e) {
+      log.warn('Unable to get filelist', e);
       res.sendStatus(404);
     }
   },
@@ -43,6 +46,7 @@ module.exports = {
       if (e.message === 'limit') {
         return res.sendStatus(413);
       }
+      log.warn('Unable to store filelist', e);
       res.sendStatus(500);
     }
   }
