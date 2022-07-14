@@ -120,6 +120,8 @@ export default function(state, emitter) {
       await state.user.syncFileList();
       emitter.emit('replaceState', '/');
     } catch (e) {
+      console.error('Error finishing login');
+      console.error(e);
       emitter.emit('replaceState', '/error');
       setTimeout(render);
     }
