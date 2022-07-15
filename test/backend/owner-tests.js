@@ -9,7 +9,8 @@ const storage = {
 function request(id, owner_token) {
   return {
     params: { id },
-    body: { owner_token }
+    body: { owner_token },
+    header: sinon.stub()
   };
 }
 

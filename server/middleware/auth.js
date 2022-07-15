@@ -16,18 +16,24 @@ module.exports = {
         if (!meta) {
           return res.sendStatus(404);
         }
-        const hmac = crypto.createHmac(
-          'sha256',
-          Buffer.from(meta.auth, 'base64')
-        );
-        hmac.update(Buffer.from(meta.nonce, 'base64'));
-        const verifyHash = hmac.digest();
-        if (crypto.timingSafeEqual(verifyHash, Buffer.from(auth, 'base64'))) {
-          req.nonce = crypto.randomBytes(16).toString('base64');
-          storage.setField(id, 'nonce', req.nonce);
-          res.set('WWW-Authenticate', `send-v1 ${req.nonce}`);
-          req.authorized = true;
-          req.meta = meta;
+
+        if (auth && meta.auth) {
+          const hmac = crypto.createHmac(
+            'sha256',
+            Buffer.from(meta.auth, 'base64')
+          );
+          hmac.update(Buffer.from(meta.nonce, 'base64'));
+          const verifyHash = hmac.digest();
+          if (crypto.timingSafeEqual(verifyHash, Buffer.from(auth, 'base64'))) {
+            req.nonce = crypto.randomBytes(16).toString('base64');
+            storage.setField(id, 'nonce', req.nonce);
+            res.set('WWW-Authenticate', `send-v1 ${req.nonce}`);
+            req.authorized = true;
+            req.meta = meta;
+          } else {
+            res.set('WWW-Authenticate', `send-v1 ${meta.nonce}`);
+            req.authorized = false;
+          }
         } else {
           res.set('WWW-Authenticate', `send-v1 ${meta.nonce}`);
           req.authorized = false;
@@ -53,7 +59,7 @@ module.exports = {
         }
 
         const ownerToken = req.body.owner_token;
-        if (ownerToken) {
+        if (ownerToken && req.meta.owner) {
           const metaOwner = Buffer.from(req.meta.owner, 'utf8');
           const owner = Buffer.from(ownerToken, 'utf8');
           assert(metaOwner.length > 0);
