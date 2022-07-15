@@ -43,6 +43,11 @@ const conf = convict({
     default: false,
     env: 'S3_USE_PATH_STYLE_ENDPOINT'
   },
+  s3_logging_enabled: {
+    format: Boolean,
+    default: false,
+    env: 'S3_LOGGING_ENABLED'
+  },
   gcs_bucket: {
     format: String,
     default: '',

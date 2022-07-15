@@ -8,6 +8,9 @@ class S3Storage {
     if (config.s3_endpoint != '') {
       cfg['endpoint'] = config.s3_endpoint;
     }
+    if (config.s3_logging_enabled) {
+      cfg['logger'] = log;
+    }
     cfg['s3ForcePathStyle'] = config.s3_use_path_style_endpoint;
     AWS.config.update(cfg);
     this.s3 = new AWS.S3();
