@@ -325,6 +325,23 @@ const conf = convict({
       default: '',
       env: 'UI_CUSTOM_ASSETS_WORDMARK'
     }
+  },
+  log: {
+    app: {
+      format: String,
+      default: 'FirefoxSend',
+      env: 'LOG_APP_NAME'
+    },
+    level: {
+      format: String,
+      default: 'info',
+      env: 'LOG_LEVEL'
+    },
+    fmt: {
+      format: ['heka', 'pretty'],
+      default: 'pretty',
+      env: 'LOG_FORMAT'
+    }
   }
 });
 
