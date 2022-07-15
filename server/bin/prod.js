@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const path = require('path');
 const Sentry = require('@sentry/node');
 const config = require('../config');
@@ -15,6 +16,10 @@ const app = express();
 expressWs(app, null, { perMessageDeflate: false });
 routes(app);
 app.ws('/api/ws', require('../routes/ws'));
+
+if (config.access_log.enabled) {
+  app.use(morgan(config.access_log.fmt));
+}
 
 app.use(
   express.static(path.resolve(__dirname, '../../dist/'), {

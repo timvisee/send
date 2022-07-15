@@ -347,6 +347,18 @@ const conf = convict({
       default: 'pretty',
       env: 'LOG_FORMAT'
     }
+  },
+  access_log: {
+    enabled: {
+      format: Boolean,
+      default: false,
+      env: 'ACCESS_LOG_ENABLED'
+    },
+    fmt: {
+      format: ['combined', 'common', 'dev', 'short', 'tiny'],
+      default: 'tiny',
+      env: 'ACCESS_LOG_FORMAT'
+    }
   }
 });
 
