@@ -11,6 +11,7 @@ module.exports = async function(req, res) {
   const newId = crypto.randomBytes(8).toString('hex');
   const metadata = req.header('X-File-Metadata');
   const auth = req.header('Authorization');
+  const contentType = req.header('Content-Type');
   if (!metadata || !auth) {
     return res.sendStatus(400);
   }
@@ -20,7 +21,8 @@ module.exports = async function(req, res) {
     metadata,
     auth: auth.split(' ')[1],
     user: req.user,
-    nonce: crypto.randomBytes(16).toString('base64')
+    nonce: crypto.randomBytes(16).toString('base64'),
+    contentType
   };
 
   try {

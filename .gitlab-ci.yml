@@ -59,7 +59,7 @@ test:
   script:
     - npm ci --cache .npm --prefer-offline
     - npm run lint
-    - npm run test:backend
+    - npm test
 
 .docker-template:
   stage: docker

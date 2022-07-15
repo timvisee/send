@@ -9,6 +9,7 @@ function makeToken(secret, counter) {
 class Metadata {
   constructor(obj, storage) {
     this.id = obj.id;
+    this.contentType = obj.contentType;
     this.dl = +obj.dl || 0;
     this.dlToken = +obj.dlToken || 0;
     this.dlimit = +obj.dlimit || 1;

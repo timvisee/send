@@ -24,6 +24,7 @@ function response() {
 const next = sinon.stub();
 
 const storedMeta = {
+  id: 'x',
   auth:
     'r9uFxEs9GEVaQR9CJJ0uTKFGhFSOTRjOY2FCLFlCIZ0Cr-VGTVpMGlXDbNR8RMT55trMpSrzWtBVKq1LffOT2g',
   nonce: 'FL4oxA7IE1PW8shwFN9qZw=='
@@ -33,7 +34,7 @@ const authMiddleware = proxyquire('../../server/middleware/auth', {
   '../storage': storage
 }).hmac;
 
-describe('Owner Middleware', function() {
+describe('HMAC Middleware', function() {
   afterEach(function() {
     storage.metadata.reset();
     storage.setField.reset();
@@ -49,7 +50,7 @@ describe('Owner Middleware', function() {
   });
 
   it('sends a 404 when metadata is not found', async function() {
-    const req = request('x', 'y');
+    const req = request('x', `send-v1 ${storedMeta.nonce}`);
     const res = response();
     await authMiddleware(req, res, next);
     sinon.assert.calledWith(res.sendStatus, 404);
@@ -58,7 +59,7 @@ describe('Owner Middleware', function() {
 
   it('sends a 401 when the auth header is invalid base64', async function() {
     storage.metadata.returns(Promise.resolve(storedMeta));
-    const req = request('x', '1');
+    const req = request('x', 'send-v1 1');
     const res = response();
     await authMiddleware(req, res, next);
     sinon.assert.calledWith(res.sendStatus, 401);

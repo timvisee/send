@@ -60,7 +60,7 @@ describe('Owner Middleware', function() {
 
   it('sends a 401 if the metadata call fails', async function() {
     const next = sinon.stub();
-    storage.metadata.returns(Promise.reject(new Error()));
+    storage.metadata.returns(Promise.reject(new Error('Catch me!')));
     const res = response();
     await ownerMiddleware(request('d', 'y'), res, next);
     sinon.assert.notCalled(next);
