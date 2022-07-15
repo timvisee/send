@@ -25,7 +25,7 @@ module.exports = {
       });
       stream.pipe(res);
     } catch (e) {
-      log.warn({ msg: 'Unable to get filelist' }, e);
+      log.warn('get', e);
       res.sendStatus(404);
     }
   },
@@ -46,7 +46,7 @@ module.exports = {
       if (e.message === 'limit') {
         return res.sendStatus(413);
       }
-      log.warn({ msg: 'Unable to store filelist' }, e);
+      log.warn('post', e);
       res.sendStatus(500);
     }
   }
