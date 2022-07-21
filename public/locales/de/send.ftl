@@ -52,9 +52,11 @@ introDescription = Mit { -send-brand } kannst du Dateien sicher mit anderen teil
 notifyUploadEncryptDone = Deine Datei ist verschlüsselt und zum Senden bereit
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Läuft ab nach { $downloadCount } oder { $timespan }
+archiveExpiryInfoWithoutTimer = Läuft ab nach { $downloadCount }
 timespanMinutes =
     { $num ->
         [one] 1 Minute
+        [0] Nie
        *[other] { $num } Minuten
     }
 timespanDays =

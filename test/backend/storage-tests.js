@@ -43,6 +43,14 @@ describe('Storage', function() {
       await storage.del('x');
       assert.equal(ms, time * 1000);
     });
+
+    it('returns infinite for remaining', async function() {
+      const time = 0;
+      await storage.set('x', null, { foo: 'bar' }, time);
+      const ms = await storage.ttl('x');
+      await storage.del('x');
+      assert.equal(ms, -1 * 1000);
+    });
   });
 
   describe('length', function() {
@@ -83,6 +91,11 @@ describe('Storage', function() {
       const { filePath: path_z } = await storage.getPrefixedInfo('z');
       assert.equal(path_z, '7-z');
       await storage.del('z');
+
+      await storage.set('f', null, { foo: 'bar' }, 0);
+      const { filePath: path_f } = await storage.getPrefixedInfo('f');
+      assert.equal(path_f, '-1-f');
+      await storage.del('f');
     });
 
     it('sets metadata', async function() {

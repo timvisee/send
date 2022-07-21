@@ -14,15 +14,25 @@ const {
 const expiryOptions = require('./expiryOptions');
 
 function expiryInfo(translate, archive) {
-  const l10n = timeLeft(archive.expiresAt - Date.now());
-  return raw(
-    translate('archiveExpiryInfo', {
-      downloadCount: translate('downloadCount', {
-        num: archive.dlimit - archive.dtotal
-      }),
-      timespan: translate(l10n.id, l10n)
-    })
-  );
+  if (archive.expiresAt === 'never') {
+    return raw(
+      translate('archiveExpiryInfoWithoutTimer', {
+        downloadCount: translate('downloadCount', {
+          num: archive.dlimit - archive.dtotal
+        })
+      })
+    );
+  } else {
+    const l10n = timeLeft(archive.expiresAt - Date.now());
+    return raw(
+      translate('archiveExpiryInfo', {
+        downloadCount: translate('downloadCount', {
+          num: archive.dlimit - archive.dtotal
+        }),
+        timespan: translate(l10n.id, l10n)
+      })
+    );
+  }
 }
 
 function password(state) {

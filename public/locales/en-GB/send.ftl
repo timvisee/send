@@ -57,9 +57,11 @@ introDescription = { -send-brand } lets you share files with end-to-end encrypti
 notifyUploadEncryptDone = Your file is encrypted and ready to send
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Expires after { $downloadCount } or { $timespan }
+archiveExpiryInfoWithoutTimer = Expires after { $downloadCount }
 timespanMinutes =
     { $num ->
         [one] 1 minute
+        [0] Never
        *[other] { $num } minutes
     }
 timespanDays =
