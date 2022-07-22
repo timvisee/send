@@ -76,6 +76,14 @@ describe('Storage', function() {
       assert.equal(Math.ceil(s), seconds);
     });
 
+    it('sets expiration to never', async function() {
+      const seconds = 0;
+      await storage.set('x', null, { foo: 'bar' }, seconds);
+      const s = await storage.redis.ttlAsync('x');
+      await storage.del('x');
+      assert.equal(Math.ceil(s), -1);
+    });
+
     it('adds right prefix based on expire time', async function() {
       await storage.set('x', null, { foo: 'bar' }, 300);
       const { filePath: path_x } = await storage.getPrefixedInfo('x');

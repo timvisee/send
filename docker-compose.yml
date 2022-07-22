@@ -8,6 +8,7 @@ services:
       - "1443:1443"
     environment:
       - REDIS_HOST=redis
+      - DEFAULT_EXPIRE_SECONDS=0
   redis:
     image: redis:alpine
   selenium-firefox:
