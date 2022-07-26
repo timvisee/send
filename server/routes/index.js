@@ -114,7 +114,7 @@ module.exports = function(app) {
   app.get('/app.webmanifest', language, require('./webmanifest'));
   app.get(`/download/:id${ID_REGEX}`, language, pages.download);
   app.get('/unsupported/:reason', language, pages.unsupported);
-  app.get(`/api/download/token/:id${ID_REGEX}`, auth.hmac, require('./token'));
+  app.get(`/api/download/token/:id${ID_REGEX}`, auth.fxa, require('./token'));
   app.get(`/api/download/:id${ID_REGEX}`, auth.dlToken, require('./download'));
   app.get(
     `/api/download/blob/:id${ID_REGEX}`,
@@ -126,8 +126,8 @@ module.exports = function(app) {
     auth.dlToken,
     require('./done.js')
   );
-  app.get(`/api/exists/:id${ID_REGEX}`, require('./exists'));
-  app.get(`/api/metadata/:id${ID_REGEX}`, auth.hmac, require('./metadata'));
+  app.get(`/api/exists/:id${ID_REGEX}`, auth.fxa, require('./exists'));
+  app.get(`/api/metadata/:id${ID_REGEX}`, auth.fxa, require('./metadata'));
   app.get('/api/filelist/:kid([\\w-]{16})', auth.fxa, filelist.get);
   app.post('/api/filelist/:kid([\\w-]{16})', auth.fxa, filelist.post);
   app.post('/api/upload', auth.fxa, require('./upload'));
