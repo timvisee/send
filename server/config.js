@@ -21,7 +21,7 @@ convict.addFormat({
   validate: ints => {
     // takes: int[], errors if any NaNs, negatives, or floats present
     for (const int of ints) {
-      if (typeof int !== 'number' || isNaN(int) || int < 0 || int % 1 > 0)
+      if (typeof int !== 'number' || isNaN(int) || int < 0)
         throw new Error('must be a comma-separated list of positive integers');
     }
   }
@@ -55,7 +55,7 @@ const conf = convict({
   },
   expire_times_seconds: {
     format: 'positive-int-array',
-    default: [300, 3600, 86400, 604800],
+    default: [300, 3600, 86400, 604800, 0],
     env: 'EXPIRE_TIMES_SECONDS'
   },
   default_expire_seconds: {

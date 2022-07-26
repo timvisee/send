@@ -25,7 +25,10 @@ module.exports = function(ws, req) {
       const owner = crypto.randomBytes(10).toString('hex');
 
       const fileInfo = JSON.parse(message);
-      const timeLimit = fileInfo.timeLimit || config.default_expire_seconds;
+      const timeLimit =
+        fileInfo.timeLimit === 0
+          ? 0
+          : fileInfo.timeLimit || config.default_expire_seconds;
       const dlimit = fileInfo.dlimit || config.default_downloads;
       const metadata = fileInfo.fileMetadata;
       const auth = fileInfo.authorization;
@@ -45,7 +48,7 @@ module.exports = function(ws, req) {
       if (
         !metadata ||
         !auth ||
-        timeLimit <= 0 ||
+        timeLimit < 0 ||
         timeLimit > maxExpireSeconds ||
         dlimit > maxDownloads ||
         (config.fxa_required && !user)

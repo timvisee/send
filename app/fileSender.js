@@ -88,7 +88,10 @@ export default class FileSender extends Nanobus {
         time: result.duration,
         speed: archive.size / (result.duration / 1000),
         createdAt: Date.now(),
-        expiresAt: Date.now() + archive.timeLimit * 1000,
+        expiresAt:
+          archive.timeLimit === 0
+            ? 'never'
+            : Date.now() + archive.timeLimit * 1000,
         secretKey: secretKey,
         nonce: this.keychain.nonce,
         ownerToken: result.ownerToken,
