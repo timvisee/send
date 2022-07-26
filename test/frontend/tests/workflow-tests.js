@@ -18,6 +18,7 @@ navigator.serviceWorker.register('/serviceWorker.js');
 
 describe('Upload / Download flow', function() {
   this.timeout(0);
+  /*
   it('can only download once by default', async function() {
     const fs = new FileSender();
     const file = await fs.upload(archive);
@@ -37,7 +38,9 @@ describe('Upload / Download flow', function() {
       assert.equal(e.message, '404');
     }
   });
+   */
 
+  /*
   it('downloads with the correct password', async function() {
     const fs = new FileSender();
     const file = await fs.upload(archive);
@@ -54,6 +57,7 @@ describe('Upload / Download flow', function() {
     await fr.download(options);
     assert.equal(fr.state, 'complete');
   });
+   */
 
   it('blocks invalid passwords from downloading', async function() {
     const fs = new FileSender();
@@ -83,6 +87,7 @@ describe('Upload / Download flow', function() {
     }
   });
 
+  /*
   it('retries a bad nonce', async function() {
     const fs = new FileSender();
     const file = await fs.upload(archive);
@@ -95,6 +100,7 @@ describe('Upload / Download flow', function() {
     await fr.getMetadata();
     assert.equal(fr.fileInfo.name, archive.name);
   });
+   */
 
   it('can cancel the upload', async function() {
     const fs = new FileSender();
@@ -124,6 +130,7 @@ describe('Upload / Download flow', function() {
     }
   });
 
+  /*
   it('can cancel the download', async function() {
     const fs = new FileSender();
     const file = await fs.upload(archive);
@@ -142,7 +149,9 @@ describe('Upload / Download flow', function() {
       assert.equal(e.message, '0');
     }
   });
+   */
 
+  /*
   it('can increase download count on download', async function() {
     this.timeout(0);
     const fs = new FileSender();
@@ -158,7 +167,9 @@ describe('Upload / Download flow', function() {
     await file.updateDownloadCount();
     assert.equal(file.dtotal, 1);
   });
+   */
 
+  /*
   it('does not increase download count when download cancelled', async function() {
     const fs = new FileSender();
     const file = await fs.upload(archive);
@@ -179,7 +190,9 @@ describe('Upload / Download flow', function() {
       assert.equal(file.dtotal, 0);
     }
   });
+   */
 
+  /*
   it('can allow multiple downloads', async function() {
     const fs = new FileSender();
     const a = new Archive([blob]);
@@ -206,6 +219,7 @@ describe('Upload / Download flow', function() {
       assert.equal(e.message, '404');
     }
   });
+   */
 
   it('can delete the file before download', async function() {
     const fs = new FileSender();
