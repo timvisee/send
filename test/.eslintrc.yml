@@ -6,10 +6,10 @@ extends:
 
 plugins:
   - mocha
-  - n
+  - node
 
 rules:
-  n/no-unpublished-require: off
+  node/no-unpublished-require: off
 
   mocha/handle-done-callback: error
   mocha/no-exclusive-tests: error

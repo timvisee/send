@@ -120,7 +120,7 @@ module.exports = function(app) {
   );
   app.post(`/api/info/:id${ID_REGEX}`, auth.owner, require('./info'));
   app.get('/__version__', function(req, res) {
-    // eslint-disable-next-line n/no-missing-require
+    // eslint-disable-next-line node/no-missing-require
     res.sendFile(require.resolve('../../dist/version.json'));
   });
 

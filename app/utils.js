@@ -23,34 +23,39 @@ function locale() {
   return document.querySelector('html').lang;
 }
 
+function loadShim(polyfill) {
+  return new Promise((resolve, reject) => {
+    const shim = document.createElement('script');
+    shim.src = polyfill;
+    shim.addEventListener('load', () => resolve(true));
+    shim.addEventListener('error', () => resolve(false));
+    document.head.appendChild(shim);
+  });
+}
+
 function isFile(id) {
   return /^[0-9a-fA-F]{10,16}$/.test(id);
 }
 
-async function copyToClipboard(str) {
-  try {
-    await navigator.clipboard.writeText(str);
-  } catch {
-    // Older browsers or the clipboard API fails because of a missing permission
-    const aux = document.createElement('input');
-    aux.setAttribute('value', str);
-    aux.contentEditable = true;
-    aux.readOnly = true;
-    document.body.appendChild(aux);
-    if (navigator.userAgent.match(/iphone|ipad|ipod/i)) {
-      const range = document.createRange();
-      range.selectNodeContents(aux);
-      const sel = getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      aux.setSelectionRange(0, str.length);
-    } else {
-      aux.select();
-    }
-    const result = document.execCommand('copy');
-    document.body.removeChild(aux);
-    return result;
+function copyToClipboard(str) {
+  const aux = document.createElement('input');
+  aux.setAttribute('value', str);
+  aux.contentEditable = true;
+  aux.readOnly = true;
+  document.body.appendChild(aux);
+  if (navigator.userAgent.match(/iphone|ipad|ipod/i)) {
+    const range = document.createRange();
+    range.selectNodeContents(aux);
+    const sel = getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    aux.setSelectionRange(0, str.length);
+  } else {
+    aux.select();
   }
+  const result = document.execCommand('copy');
+  document.body.removeChild(aux);
+  return result;
 }
 
 const LOCALIZE_NUMBERS = !!(
@@ -282,6 +287,7 @@ module.exports = {
   copyToClipboard,
   arrayToB64,
   b64ToArray,
+  loadShim,
   isFile,
   openLinksInNewTab,
   browserName,

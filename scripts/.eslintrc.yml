@@ -1,5 +1,5 @@
 rules:
-  n/shebang: off
+  node/shebang: off
   security/detect-child-process: off
 
   no-console: off

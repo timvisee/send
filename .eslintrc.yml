@@ -5,24 +5,21 @@ env:
 extends:
   - eslint:recommended
   - prettier
-  - plugin:n/recommended
+  - plugin:node/recommended
   - plugin:security/recommended
 
 plugins:
-  - n
+  - node
   - security
 
 root: true
 
 rules:
-  n/no-deprecated-api: off
-  n/no-unsupported-features/es-syntax: off
-  n/no-unsupported-features/node-builtins: off
-  n/no-unpublished-require: off
-  n/no-unpublished-import: off
-  n/no-process-exit: off
-  # This forces using file extensions in imports, which is a best practice, but refactoring would take some time
-  n/no-missing-import: off
+  node/no-deprecated-api: off
+  node/no-unsupported-features/es-syntax: off
+  node/no-unsupported-features/node-builtins: off
+  node/no-unpublished-require: off
+  node/no-unpublished-import: off
 
   security/detect-non-literal-fs-filename: off
   security/detect-object-injection: off

@@ -3,7 +3,7 @@ const isServer = typeof genmap === 'function';
 let prefix = '';
 let manifest = {};
 try {
-  //eslint-disable-next-line n/no-missing-require
+  //eslint-disable-next-line node/no-missing-require
   manifest = require('../dist/manifest.json');
 } catch (e) {
   // use middleware

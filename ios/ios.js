@@ -1,4 +1,4 @@
-/* global window, document */
+/* global window, document, fetch */
 
 const MAXFILESIZE = 1024 * 1024 * 1024 * 2;
 

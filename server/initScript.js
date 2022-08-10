@@ -5,7 +5,7 @@ const clientConstants = require('./clientConstants');
 
 let sentry = '';
 if (config.sentry_id) {
-  //eslint-disable-next-line n/no-missing-require
+  //eslint-disable-next-line node/no-missing-require
   const version = require('../dist/version.json');
   sentry = `
 var SENTRY_CONFIG = {

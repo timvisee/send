@@ -1,5 +1,6 @@
 /* global DEFAULTS LIMITS WEB_UI PREFS */
 import 'core-js';
+import 'fast-text-encoding'; // MS Edge support
 import 'intl-pluralrules';
 import choo from 'choo';
 import nanotiming from 'nanotiming';

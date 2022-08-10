@@ -1,4 +1,4 @@
-// eslint-disable-next-line n/no-extraneous-require
+// eslint-disable-next-line node/no-extraneous-require
 const ip = require('ip');
 const common = require('./wdio.common.conf');
 const dir =
