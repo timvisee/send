@@ -45,7 +45,14 @@ async function checkCrypto() {
     );
     return true;
   } catch (err) {
-    return false;
+    try {
+      window.asmCrypto = await import('asmcrypto.js');
+      window.elliptic = await import('elliptic');
+      await import('webcrypto-liner/build/webcrypto-liner.shim.min');
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 

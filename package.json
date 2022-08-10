@@ -127,12 +127,14 @@
     "@fluent/langneg": "^0.6.2",
     "@google-cloud/storage": "^6.2.3",
     "@sentry/node": "^7.7.0",
+    "asmcrypto.js": "^2.3.2",
     "aws-sdk": "^2.1109.0",
     "body-parser": "^1.20.0",
     "choo": "^7.0.0",
     "cldr-core": "^35.1.0",
     "convict": "^6.2.3",
     "convict-format-with-validator": "^6.2.0",
+    "elliptic": "^6.5.4",
     "express": "^4.17.3",
     "helmet": "^3.23.3",
     "mozlog": "^3.0.1",
@@ -140,7 +142,8 @@
     "redis": "^3.1.1",
     "redis-mock": "^0.47.0",
     "selenium-standalone": "^6.24.0",
-    "ua-parser-js": "^0.7.31"
+    "ua-parser-js": "^0.7.31",
+    "webcrypto-liner": "^1.4.0"
   },
   "availableLanguages": [
     "en-US",
