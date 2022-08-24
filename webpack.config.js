@@ -123,6 +123,8 @@ const web = {
               path.resolve(__dirname, 'node_modules/crc'),
               path.resolve(__dirname, 'node_modules/@fluent'),
               path.resolve(__dirname, 'node_modules/@sentry'),
+              path.resolve(__dirname, 'node_modules/webcrypto-core'),
+              path.resolve(__dirname, 'node_modules/asmcrypto.js'),
               path.resolve(__dirname, 'node_modules/tslib')
             ],
             loader: 'webpack-unassert-loader'
