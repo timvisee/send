@@ -47,6 +47,16 @@ const conf = convict({
     default: '',
     env: 'GCS_BUCKET'
   },
+  az_storage_url: {
+    format: String,
+    default: '',
+    env: 'AZ_STORAGE_URL'
+  },
+  az_storage_container: {
+    format: String,
+    default: '',
+    env: 'AZ_STORAGE_CONTAINER'
+  },
   expire_times_seconds: {
     format: 'positive-int-array',
     default: [300, 3600, 86400, 604800],
@@ -175,7 +185,8 @@ const conf = convict({
   },
   custom_description: {
     format: String,
-    default: 'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay online forever.',
+    default:
+      'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay online forever.',
     env: 'CUSTOM_DESCRIPTION'
   },
   detect_base_url: {

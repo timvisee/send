@@ -64,22 +64,25 @@ Pick how you want to store uploaded files and set these config options according
 
 Redis is used as the metadata database for the backend and is required no matter which storage method you use.
 
-| Name  | Description |
-|------------------|-------------|
+| Name                                                                   | Description |
+|------------------------------------------------------------------------|-------------|
 | `REDIS_HOST`, `REDIS_PORT`, `REDIS_USER`, `REDIS_PASSWORD`, `REDIS_DB` | Host name, port, and pass of the Redis server (defaults to `localhost`, `6379`, and no password)
-| `FILE_DIR`       | Directory for storage inside the Docker container (defaults to `/uploads`)
-| `S3_BUCKET`  | The S3 bucket name to use (only set if using S3 for storage)
-| `S3_ENDPOINT` | An optional custom endpoint to use for S3 (defaults to AWS)
-| `S3_USE_PATH_STYLE_ENDPOINT`| Whether to force [path style URLs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#s3ForcePathStyle-property) for S3 objects (defaults to `false`)
-| `AWS_ACCESS_KEY_ID` | S3 access key ID (only set if using S3 for storage)
-| `AWS_SECRET_ACCESS_KEY` | S3 secret access key ID (only set if using S3 for storage)
-| `GCS_BUCKET` | Google Cloud Storage bucket (only set if using GCP for storage)
+| `FILE_DIR`                                                             | Directory for storage inside the Docker container (defaults to `/uploads`)
+| `S3_BUCKET`                                                            | The S3 bucket name to use (only set if using S3 for storage)
+| `S3_ENDPOINT`                                                          | An optional custom endpoint to use for S3 (defaults to AWS)
+| `S3_USE_PATH_STYLE_ENDPOINT`                                           | Whether to force [path style URLs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#s3ForcePathStyle-property) for S3 objects (defaults to `false`)
+| `AWS_ACCESS_KEY_ID`                                                    | S3 access key ID (only set if using S3 for storage)
+| `AWS_SECRET_ACCESS_KEY`                                                | S3 secret access key ID (only set if using S3 for storage)
+| `GCS_BUCKET`                                                           | Google Cloud Storage bucket (only set if using GCP for storage)
+| `AZ_STORAGE_URL`                                                       | Azure storage account URL (only set if using Azure for storage)
+| `AZ_STORAGE_CONTAINER`                                                 | Azure storage account container name (only set if using Azure for storage)
+
 
 *Note: more options can be found here: https://github.com/timvisee/send/blob/master/server/config.js*
 
 ## Branding
 
-To change the look the colors aswell as some graphics can be changed via environment variables.  
+To change the look the colors aswell as some graphics can be changed via environment variables.
 See the table below for the variables and their default values.
 
 | Name | Default | Description |
