@@ -1,0 +1,67 @@
+owner: tdulcet # timvisee
+repo: send-instances-status
+
+sites:
+  - name: send.vis.ee
+    url: https://send.vis.ee
+    assignees:
+      - timvisee
+  - name: send.zcyph.cc
+    url: https://send.zcyph.cc
+  - name: send.ephemeral.land
+    url: https://send.ephemeral.land
+  - name: send.mni.li
+    url: https://send.mni.li
+  - name: send.monks.tools
+    url: https://send.monks.tools
+  - name: send.boblorange.net
+    url: https://send.boblorange.net
+  - name: send.aurorabilisim.com
+    url: https://send.aurorabilisim.com
+  - name: send.artemislena.eu
+    url: https://send.artemislena.eu
+  - name: send.datahoarder.dev
+    url: https://send.datahoarder.dev
+  - name: fileupload.ggc-project.de
+    url: https://fileupload.ggc-project.de
+  - name: drop.chapril.org
+    url: https://drop.chapril.org
+  - name: send.jeugdhulp.be
+    url: https://send.jeugdhulp.be
+  - name: files.psu.ru
+    url: https://files.psu.ru
+  - name: send.portailpro.net
+    url: https://send.portailpro.net
+  - name: transfer.acted.org
+    url: https://transfer.acted.org
+  - name: send.datenpost.app
+    url: https://send.datenpost.app
+  - name: send.angelic.icu
+    url: https://send.angelic.icu
+  - name: s.opnxng.com
+    url: https://s.opnxng.com
+  - name: send.whateveritworks.org
+    url: https://send.whateveritworks.org
+  - name: send.cyberjake.xyz
+    url: https://send.cyberjake.xyz
+  - name: send.kokomo.cloud
+    url: https://send.kokomo.cloud
+
+status-website:
+  # cname: status.vis.ee
+  baseUrl: /send-instances-status
+  logoUrl: https://raw.githubusercontent.com/timvisee/send/master/assets/icon.svg
+  name: Public Send instances
+  introTitle: Public Send service instances
+  introMessage: Monitor the status and uptime of the public [Send](https://github.com/timvisee/send) service instances. For more details about each instance, how to use them and how to host your own instance, please see our [Public Send instances](https://github.com/timvisee/send-instances) repository.
+  navbar:
+    - title: Status
+      href: /$REPO
+    - title: Send
+      href: https://github.com/timvisee/send
+    - title: Send instances
+      href: https://github.com/timvisee/send-instances
+    - title: GitHub
+      href: https://github.com/$OWNER/$REPO
+  favicon: https://raw.githubusercontent.com/timvisee/send/master/assets/favicon-32x32.png
+  faviconSvg: https://raw.githubusercontent.com/timvisee/send/master/assets/icon.svg
