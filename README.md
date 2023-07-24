@@ -4,7 +4,16 @@ A fork of Mozilla's [Firefox-Send](https://github.com/mozilla/send).
 <br>
 Simple, private AES-128-GCM end-to-end encrypted file sharing service.
 
+### €⁠20 on [Hetzner Cloud](https://hetzner.cloud/?ref=eLtKhFK70n4h)
+
+### Automatic Installs
+```
+https://github.com/WhateverItWorks/Watchtower
+```
+
 ## Deploy with Docker
+Ensure [Docker Engine](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed before beginning.
+
 Run send in production with docker-compose:
 ```
 git clone https://github.com/timvisee/send.git
