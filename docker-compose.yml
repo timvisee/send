@@ -1,19 +1,50 @@
-version: "3"
+version: "3.7"
+
 services:
-  web:
-    build: .
-    links:
-      - redis
+  send:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #image: registry.gitlab.com/timvisee/send:latest
+    container_name: send
+    hostname: send
+    restart: always
     ports:
-      - "1443:1443"
-    environment:
-      - REDIS_HOST=redis
-  redis:
-    image: redis:alpine
-  selenium-firefox:
-    image: b4handjr/selenium-firefox
-    ports:
-      - "${VNC_PORT:-5900}:5900"
-    shm_size: 2g
+      - '127.0.0.1:1234:1234'
+    user: 65534:65534
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     volumes:
-      - .:/code
+      - ./uploads:/uploads
+    environment:
+      - BASE_URL=https://changethis
+      - PORT=1234
+      #incase the feds needs to contact you to takedown a link
+      - SEND_FOOTER_DMCA_URL=https://changethis/dmca
+
+      #Sentry Client ID and DSN for error tracking (optional, disabled by default)
+      #- SENTRY_CLIENT=
+      #- SENTRY_DSN=
+
+      # For local uploads storage
+      - FILE_DIR=/uploads
+
+      # For S3 object storage (disable volume and FILE_DIR variable)
+      # - AWS_ACCESS_KEY_ID=********
+      # - AWS_SECRET_ACCESS_KEY=********
+      # - S3_BUCKET=send
+      # - S3_ENDPOINT=s3.us-west-2.amazonaws.com
+      # - S3_USE_PATH_STYLE_ENDPOINT=true
+
+      # To customize upload limits
+      - EXPIRE_TIMES_SECONDS=86400,3600,86400,604800,2592000,31536000,157680000
+      - DEFAULT_EXPIRE_SECONDS=86400
+      - DEFAULT_DOWNLOADS=1
+      - MAX_EXPIRE_SECONDS=604800
+      - MAX_FILES_PER_ARCHIVE=64
+      - DOWNLOAD_COUNTS=10,1,2,5,10,15,25,50,100,1000,10000,100000,250000
+      - MAX_DOWNLOADS=100
+      - MAX_FILE_SIZE=10747904000
