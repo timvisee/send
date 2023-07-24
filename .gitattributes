@@ -1,2 +1,6 @@
 public/locales/*/*.ftl linguist-documentation
 docs/** linguist-documentation
+*.md linguist-detectable=true
+*.md linguist-documentation=false
+*.json linguist-detectable=true
+*.yml linguist-detectable=true
