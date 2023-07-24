@@ -8,4 +8,4 @@
 
 ## Reporting a Vulnerability
 
-Make a pull request
+If you identify a valid security issue, please make a pull request.
