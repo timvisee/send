@@ -151,9 +151,9 @@ docker-compose up -d --build
 ## Instances
 
 - [Instances](#instances)
-- [Uptime](#live-status)
-- [How to use](#How-to-Use-CLI)
-- [Host your own instance](#Deploy-with-Docker)
+- [Live Status](#live-status)
+- [How to use](#how-to-use-cli)
+- [Host your own instance](#deploy-with-docker)
 - [Submit changes](#submit-changes) 
 
 This page does not give any promises or warranties with regard to instance
@@ -238,12 +238,6 @@ This repository contains the open-source uptime monitor and status page for [Tea
 <!--end: status pages-->
 
 [**Visit our status website →**](https://tdulcet.github.io/send-instances-status)
-
-## 📄 License
-
-- Powered by: [Upptime](https://github.com/upptime/upptime)
-- Code: [MIT](./LICENSE) © [Teal Dulcet](https://www.tealdulcet.com/)
-- Data in the `./history` directory: [Open Database License](https://opendatacommons.org/licenses/odbl/1-0/)
 
 ## Clients
 
