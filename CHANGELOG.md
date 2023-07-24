@@ -1,5 +1,15 @@
 ## Change Log
 
+### v2.5.4 (2023/07/24 19:26 +00:00)
+- Renamed LICENSE to LICENSE.md and Changed to AGPL-3.0
+- Updated Dependencies
+- Optimized code to understand
+- Added example nginx.conf
+- Harden docker-compose.yml
+- Added SECURITY.md Policy
+- Updated Nodejs & Optimized Dockerfile
+- Optimzed README.md
+
 ### v2.5.1 (2018/03/12 19:26 +00:00)
 - [#789](https://github.com/mozilla/send/pull/789) Fixed #775 : Made text not-selectable (@RCMainak)
 
@@ -156,7 +166,8 @@
 - [#396](https://github.com/mozilla/send/pull/396) add babel-polyfill (@dannycoates)
 - [#394](https://github.com/mozilla/send/pull/394) catch JSON.parse errors of storage metadata (@dannycoates)
 - [#367](https://github.com/mozilla/send/pull/367) Generate production locales using 'compare-locales' (@pdehaan)
-- [#392](https://github.com/mozilla/send/pull/392) Adjust hover behavior on send-logo (#382) Fixes: #382. (@weihanglo)
+- [#392](https://github.com/mozilla/send/pull/392) Adjust hover behavior on send-logo (#382)
+ Fixes: #382. (@weihanglo)
 - [#382](https://github.com/mozilla/send/pull/382) Adjust hover behavior on send-logo (#382) (@weihanglo)
 - [#382](https://github.com/mozilla/send/pull/382) Adjust hover behavior on send-logo (#382) (@weihanglo)
 - [#380](https://github.com/mozilla/send/pull/380) Add Pontoon URL to README (@pdehaan)
