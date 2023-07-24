@@ -1,4 +1,4 @@
-## Take-down process
+## DMCA Takedown Process Request
 
 In cases of a DMCA notice, or other abuse yet to be determined, a file has to be removed from the service.
 
