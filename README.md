@@ -16,20 +16,27 @@ Ensure [Docker Engine](https://docs.docker.com/engine/install/) and [Docker Comp
 
 Run send in production with docker-compose:
 ```
+apt install git
 git clone https://github.com/timvisee/send.git
 cd send
 nano docker-compose.yml
+chmod 777 uploads
 docker-compose pull
 docker-compose up -d
 ```
+Should be running at: http://localhost:1234
 
 Run send in developer with docker-compose:
 ```
+apt install git
 git clone https://github.com/timvisee/send.git
 cd send
 nano docker-compose.yml
+chmod 777 uploads
 docker-compose up -d --build
 ```
+Should be running at: http://localhost:1234
+
 
 ## Environment Variables
 
@@ -117,12 +124,30 @@ See the table below for the variables and their default values.
 
 Side note: If you define a custom URL and a custom footer, only the footer text will display, but will be hyperlinked to the URL.
 
+## Security Audits:
+
+- [Internet.nl](https://internet.nl/site/send.whateveritworks.org/2060148/)
+- [HSTS Preload](https://hstspreload.org/)
+- [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html?d=send.whateveritworks.org)
+- [Security Headers](https://securityheaders.com/?q=send.whateveritworks.org&hide=on&followRedirects=on)
+- [pagespeed](https://pagespeed.web.dev/)
+- [webbkoll](https://webbkoll.dataskydd.net/en)
+- [ImmuniWeb](https://www.immuniweb.com/ssl/send.whateveritworks.org/uLlrAeMb/)
+- [Hardenize](https://www.hardenize.com/report/send.whateveritworks.org/1686343966)
+- [Mozilla.org](https://observatory.mozilla.org/)
+- [report-uri.com](https://report-uri.com/home/tools)
+- [check-your-website.server-daten.de](https://check-your-website.server-daten.de/?q=search.whateveritworks.org)
+- [csp-evaluator.withgoogle.com](https://csp-evaluator.withgoogle.com/)
+- [OpenWPM](https://github.com/openwpm/OpenWPM)
+- [privacyscore.org](https://privacyscore.org/site/215029/)
+
 ## Instances
 
 - [Instances](#instances)
 - [Live Status](#live-status)
 - [How to use](#how-to-use-cli)
 - [Host your own instance](#deploy-with-docker)
+- [Security Audits](#security-audits)
 - [Submit changes](#submit-changes)
 - [DMCA Takedown Process Request](#dmca-takedown-process-request)
 
