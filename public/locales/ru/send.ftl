@@ -53,7 +53,7 @@ introTitle = Простой и безопасный обмен файлами
 introDescription = { -send-brand } позволяет вам делиться файлами со сквозным шифрованием и ограниченным сроком действия ссылки на загрузку. Так что, вы сможете делиться файлами приватно и они не останутся в сети навсегда.
 notifyUploadEncryptDone = Ваш файл зашифрован и готов к отправке
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
-archiveExpiryInfo = Срок хранения истекает после { $downloadCount } или через { $timespan }
+archiveExpiryInfo = Удалить после { $downloadCount } или через { $timespan }
 timespanMinutes =
     { $num ->
         [one] { $num } минуту
@@ -89,7 +89,7 @@ gb = ГБ
 # localized number and byte abbreviation. example "2.5MB"
 fileSize = { $num }{ $units }
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
-totalSize = Общий размер: { $size }
+totalSize = Всего: { $size }
 # the next line after the colon contains a file name
 copyLinkDescription = Скопируйте ссылку, чтобы поделиться своим файлом:
 copyLinkButton = Копировать ссылку
@@ -117,13 +117,13 @@ legalTitle = Уведомление о конфиденциальности { -s
 legalDateStamp = Версия 1.0, от 12 марта 2019 года
 # A short representation of a countdown timer containing the number of days, hours, and minutes remaining as digits, example "2d 11h 56m"
 expiresDaysHoursMinutes = { $days } дн. { $hours } ч. { $minutes } мин.
-addFilesButton = Выберите файлы для выгрузки
+addFilesButton = Добавить
 uploadButton = Выгрузить
 # the first part of the string 'Drag and drop files or click to send up to 1GB'
 dragAndDropFiles = Перетащите файлы сюда
 # the second part of the string 'Drag and drop files or click to send up to 1GB'
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
-orClickWithSize = или щёлкните здесь, чтобы отправить их (до { $size })
+orClickWithSize = или кликните сюда для отправки файлов до { $size }
 addPassword = Защитить паролем
 emailPlaceholder = Введите ваш адрес электронной почты
 # $size is the size of the file, displayed using the fileSize message as format (e.g. "2.5MB")
