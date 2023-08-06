@@ -140,6 +140,7 @@ Side note: If you define a custom URL and a custom footer, only the footer text 
 - [csp-evaluator.withgoogle.com](https://csp-evaluator.withgoogle.com/)
 - [OpenWPM](https://github.com/openwpm/OpenWPM)
 - [privacyscore.org](https://privacyscore.org/site/215029/)
+- [XSS.Report](https://xss.report)
 
 ## Instances
 
