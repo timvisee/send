@@ -135,7 +135,7 @@
     "@fluent/bundle": "^0.17.1",
     "@fluent/langneg": "^0.7.0",
     "@google-cloud/storage": "^6.2.3",
-    "@sentry/node": "^7.7.0",
+    "@sentry/node": "^7.61.1",
     "aws-sdk": "^2.1420.0",
     "body-parser": "^1.20.0",
     "choo": "^7.0.0",
