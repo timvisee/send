@@ -1,14 +1,14 @@
 {
   "name": "send",
   "description": "File Sharing Experiment",
-  "version": "3.4.23",
-  "author": "Mozilla (https://mozilla.org)",
+  "version": "3.4.24",
+  "author": "Tim Visee <3a4fb3964f@sinenomine.email> (https://timvisee.com)",
   "contributors": [
     "Tim Visee <3a4fb3964f@sinenomine.email> (https://timvisee.com)"
   ],
-  "repository": "gitlab:timvisee/send",
-  "homepage": "https://gitlab.com/timvisee/send/",
-  "license": "MPL-2.0",
+  "repository": "github.com/timvisee/send",
+  "homepage": "https://github.com/timvisee/send",
+  "license": "AGPL-3.0",
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
