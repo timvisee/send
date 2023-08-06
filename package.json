@@ -117,7 +117,7 @@
     "sinon": "^7.5.0",
     "string-hash": "^1.1.3",
     "stylelint": "^14.9.1",
-    "stylelint-config-standard": "^26.0.0",
+    "stylelint-config-standard": "^29.0.0",
     "stylelint-no-unsupported-browser-features": "^5.0.3",
     "svgo": "^2.8.0",
     "svgo-loader": "^3.0.1",
