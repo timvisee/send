@@ -2,7 +2,7 @@
 
 A fork of Mozilla's [Firefox-Send](https://github.com/mozilla/send). 
 <br>
-Simple, private AES-128-GCM end-to-end encrypted file sharing service.
+Simple, private end-to-end encrypted file sharing.
 
 ### €⁠20 on [Hetzner Cloud](https://hetzner.cloud/?ref=eLtKhFK70n4h)
 
