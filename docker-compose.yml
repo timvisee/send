@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    #image: registry.gitlab.com/timvisee/send:latest
     container_name: send
     hostname: send
     restart: always
