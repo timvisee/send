@@ -8,10 +8,14 @@ const path = require('path');
 
 module.exports = async function(req) {
   const locale = (() => {
-    if (config.custom_locale != '' && fs.existsSync(path.join(__dirname,'../public/locales',config.custom_locale))) {
-        return config.custom_locale;
-    }
-    else {
+    if (
+      config.custom_locale != '' &&
+      fs.existsSync(
+        path.join(__dirname, '../public/locales', config.custom_locale)
+      )
+    ) {
+      return config.custom_locale;
+    } else {
       return req.language || 'en-US';
     }
   })();

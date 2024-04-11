@@ -170,12 +170,13 @@ const conf = convict({
   },
   custom_title: {
     format: String,
-    default: 'Send',
+    default: 'eCellula Send',
     env: 'CUSTOM_TITLE'
   },
   custom_description: {
     format: String,
-    default: 'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay online forever.',
+    default:
+      'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay online forever.',
     env: 'CUSTOM_DESCRIPTION'
   },
   detect_base_url: {

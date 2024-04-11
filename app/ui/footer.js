@@ -78,8 +78,7 @@ class Footer extends Component {
             </a>
           </li>
         `);
-      }
-      else if (WEB_UI.CUSTOM_FOOTER_URL != '') {
+      } else if (WEB_UI.CUSTOM_FOOTER_URL != '') {
         footer.push(html`
           <li class="m-2">
             <a href="${WEB_UI.CUSTOM_FOOTER_URL}" target="_blank">
@@ -87,15 +86,13 @@ class Footer extends Component {
             </a>
           </li>
         `);
-      }
-      else if (WEB_UI.CUSTOM_FOOTER_TEXT != '') {
+      } else if (WEB_UI.CUSTOM_FOOTER_TEXT != '') {
         footer.push(html`
           <li class="m-2">
             ${WEB_UI.CUSTOM_FOOTER_TEXT}
           </li>
-        `)
-      }
-      else  {
+        `);
+      } else {
         footer.push(html`
           <li class="m-2">
             ${translate('footerText')}

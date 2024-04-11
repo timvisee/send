@@ -3,9 +3,16 @@ const assets = require('../common/assets');
 const initScript = require('./initScript');
 
 module.exports = function(state, body = '') {
-  const custom_css = state.ui.assets.custom_css !== ''
-    ? html`<link rel="stylesheet" type="text/css" href="${state.ui.assets.custom_css}" />`
-    : ''
+  const custom_css =
+    state.ui.assets.custom_css !== ''
+      ? html`
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="${state.ui.assets.custom_css}"
+          />
+        `
+      : '';
 
   return html`
     <!DOCTYPE html>
