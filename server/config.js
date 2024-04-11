@@ -307,7 +307,7 @@ const conf = convict({
     },
     icon: {
       format: String,
-      default: '',
+      default: 'assets/logo-white.png',
       env: 'UI_CUSTOM_ASSETS_ICON'
     },
     safari_pinned_tab: {
