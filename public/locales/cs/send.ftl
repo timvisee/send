@@ -48,12 +48,12 @@ passwordSetError = Toto heslo nemohlo být nastaveno
 -send-brand =
     { $case ->
        *[nom] Send
-        [gen] Send
-        [dat] Send
+        [gen] Sendu
+        [dat] Sendu
         [acc] Send
-        [voc] Send
-        [loc] Send
-        [ins] Send
+        [voc] Sende
+        [loc] Sendu
+        [ins] Sendem
     }
 -send-short-brand =
     { $case ->
@@ -86,7 +86,7 @@ passwordSetError = Toto heslo nemohlo být nastaveno
         [ins] Mozillou
     }
 introTitle = Jednoduché a soukromé sdílení souborů
-introDescription = S { -send-brand(case: "ins") } jsou sdílené soubory šifrované end-to-end, takže ani my nevíme, co sdílíte. Platnost odkazů je navíc omezená. Soubory tak můžete sdílet soukromě a s jistotou, že se nezůstanou na internetu válet navždy.
+introDescription = Se { -send-brand(case: "ins") } jsou sdílené soubory šifrované end-to-end, takže ani my nevíme, co sdílíte. Platnost odkazů je navíc omezená. Soubory tak můžete sdílet soukromě a s jistotou, že se nezůstanou na internetu válet navždy.
 notifyUploadEncryptDone = Váš soubor je zašifrovaný a připraven k odeslání
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Platnost vyprší po { $downloadCount } nebo za { $timespan }
@@ -131,7 +131,7 @@ copyLinkDescription = Soubor můžete sdílet tímto odkazem:
 copyLinkButton = Zkopírovat odkaz
 downloadTitle = Stáhnout soubory
 downloadDescription = Tento soubor byl sdílen přes { -send-brand(case: "acc") } s end-to-end šifrováním a odkazem s omezenou platností.
-trySendDescription = Vyzkoušejte jednoduché a bezpečné sdílení souborů s { -send-brand(case: "ins") }
+trySendDescription = Vyzkoušejte jednoduché a bezpečné sdílení souborů se { -send-brand(case: "ins") }
 # count will always be > 10
 tooManyFiles =
     { $count ->
@@ -189,6 +189,6 @@ downloadFirefoxPromo = { -send-short-brand } od aplikace { -firefox }.
 shareLinkDescription = Sdílet odkaz na soubor:
 shareLinkButton = Sdílet odkaz
 # $name is the name of the file
-shareMessage = Stáhněte si soubor „{ $name }“ s { -send-brand(case: "ins") } - jednoduché a bezpečné sdílení souborů
+shareMessage = Stáhněte si soubor „{ $name }“ se { -send-brand(case: "ins") } - jednoduché a bezpečné sdílení souborů
 trailheadPromo = Existuje způsob, jak ochránit své soukromí. Používejte Firefox.
 learnMore = Zjistit více.
