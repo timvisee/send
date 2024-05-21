@@ -263,6 +263,11 @@ const conf = convict({
     default: '',
     env: 'CUSTOM_FOOTER_URL'
   },
+  try_send_url: {
+  format: String,
+  default: '/',
+  env: 'TRY_SEND_URL'
+  },
   ui_color_primary: {
     format: String,
     default: '#0a84ff',

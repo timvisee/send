@@ -2,6 +2,7 @@ const html = require('choo/html');
 const assets = require('../../common/assets');
 
 module.exports = function(state) {
+  const WEB_UI = state.WEB_UI;
   const btnText = state.user.loggedIn ? 'okButton' : 'sendYourFilesLink';
   return html`
     <div
@@ -23,7 +24,7 @@ module.exports = function(state) {
         ${state.translate('trySendDescription')}
       </p>
       <p class="my-5">
-        <a href="/" class="btn rounded-lg flex items-center mt-4" role="button"
+        <a href="${WEB_UI.TRY_SEND_URL}" class="btn rounded-lg flex items-center mt-4" role="button"
           >${state.translate(btnText)}</a
         >
       </p>
