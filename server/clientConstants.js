@@ -19,7 +19,8 @@ module.exports = {
       PRIMARY: config.ui_color_primary,
       ACCENT: config.ui_color_accent
     },
-    CUSTOM_ASSETS: config.ui_custom_assets
+    CUSTOM_ASSETS: config.ui_custom_assets,
+    SHOW_DELETE_CONFIRM: config.show_delete_confirm
   },
   DEFAULTS: {
     DOWNLOADS: config.default_downloads,
