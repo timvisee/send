@@ -175,7 +175,8 @@ const conf = convict({
   },
   custom_description: {
     format: String,
-    default: 'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay online forever.',
+    default:
+      'Encrypt and send files with a link that automatically expires to ensure your important documents don’t stay online forever.',
     env: 'CUSTOM_DESCRIPTION'
   },
   detect_base_url: {
@@ -222,6 +223,11 @@ const conf = convict({
     format: String,
     default: '',
     env: 'FXA_CSP_PROFILEIMAGE_URL'
+  },
+  show_delete_confirm: {
+    format: Boolean,
+    default: false,
+    env: 'SHOW_DELETE_CONFIRM'
   },
   survey_url: {
     format: String,
