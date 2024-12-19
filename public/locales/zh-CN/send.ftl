@@ -2,12 +2,12 @@ title = Send
 importingFile = 正在导入…
 encryptingFile = 正在加密…
 decryptingFile = 正在解密…
-downloadCount =
-    { $num ->
+downloadCount = { $num ->
+        [one] 1 次下载
        *[other] { $num } 次下载
     }
-timespanHours =
-    { $num ->
+timespanHours = { $num ->
+        [one] 1 小时
        *[other] { $num } 小时
     }
 copiedUrl = 已复制！
@@ -142,5 +142,4 @@ shareLinkDescription = 您的文件链接：
 shareLinkButton = 分享链接
 # $name is the name of the file
 shareMessage = 使用 { -send-brand } 下载“{ $name }”：简单、安全的文件分享服务
-trailheadPromo = 捍卫隐私不是幻想。加入 Firefox 一同抗争。
 learnMore = 详细了解。
