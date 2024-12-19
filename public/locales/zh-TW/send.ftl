@@ -2,12 +2,12 @@ title = Send
 importingFile = 匯入中…
 encryptingFile = 加密中…
 decryptingFile = 解密中…
-downloadCount =
-    { $num ->
+downloadCount = { $num ->
+        [one] 1 次下載
        *[other] { $num } 次下載
     }
-timespanHours =
-    { $num ->
+timespanHours = { $num ->
+        [one] 1 小時
        *[other] { $num } 小時
     }
 copiedUrl = 已複製！
@@ -26,6 +26,11 @@ notSupportedOutdatedDetail = 很可惜，此版本的 Firefox 不支援 Send 所
 updateFirefox = 更新 Firefox
 deletePopupCancel = 取消
 deleteButtonHover = 刪除
+footerText = Not affiliated with Mozilla or Firefox.
+footerLinkDonate = 捐助
+footerLinkCli = 命令列
+footerLinkDmca = DMCA
+footerLinkSource = 原始碼
 passwordTryAgain = 密碼不正確，請再試一次。
 javascriptRequired = Send 需要開啟 JavaScript 功能
 whyJavascript = 為什麼 Send 需要 JavaScript 才能使用？
@@ -45,27 +50,28 @@ passwordSetError = 無法設定此密碼
 -send-short-brand = Send
 -firefox = Firefox
 -mozilla = Mozilla
+
 introTitle = 簡單而私密的檔案共享服務
 introDescription = { -send-brand } 讓您可透過點對點加密的方式來分享檔案，並提供會自動失效的鏈結。這樣一來就可以保留分享時的隱私，也確保檔案不會永久保存於網路上。
 notifyUploadEncryptDone = 已加密您的檔案，可以傳送
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = { $downloadCount } 或 { $timespan } 後失效
-timespanMinutes =
-    { $num ->
+timespanMinutes = { $num ->
+        [one] 1 分鐘
        *[other] { $num } 分鐘
     }
-timespanDays =
-    { $num ->
+timespanDays = { $num ->
+        [one] 1 天
        *[other] { $num } 天
     }
-timespanWeeks =
-    { $num ->
+timespanWeeks = { $num ->
+        [one] 1 週
        *[other] { $num } 週
     }
-fileCount =
-    { $num ->
-       *[other] { $num } 個檔案
-    }
+fileCount = { $num ->
+    [one] 1 個檔案
+   *[other] { $num } 個檔案
+}
 # byte abbreviation
 bytes = 位元組
 # kibibyte abbreviation
@@ -85,15 +91,15 @@ downloadTitle = 下載檔案
 downloadDescription = 此檔案是透過 { -send-brand } 進行分享，以點對點加密的方式來分享檔案，並提供會自動失效的鏈結。
 trySendDescription = 快試試 { -send-brand }，簡單安全的檔案分享機制。
 # count will always be > 10
-tooManyFiles =
-    { $count ->
-       *[other] 一次僅能上傳 { $count } 個檔案。
-    }
+tooManyFiles = { $count ->
+     [one] 一次僅能上傳 1 個檔案。
+    *[other] 一次僅能上傳 { $count } 個檔案。
+}
 # count will always be > 10
-tooManyArchives =
-    { $count ->
-       *[other] 僅允許 { $count } 個壓縮檔。
-    }
+tooManyArchives = { $count ->
+     [one] 僅允許 1 個壓縮檔。
+    *[other] 僅允許 { $count } 個壓縮檔。
+}
 expiredTitle = 此鏈結已經失效。
 notSupportedDescription = 無法於此瀏覽器使用 { -send-brand }。在最新版的 { -firefox } 中使用 { -send-short-brand } 會有最佳效果，也可在大部分瀏覽器的最新版本當中使用。
 downloadFirefox = 下載 { -firefox }
@@ -136,5 +142,4 @@ shareLinkDescription = 您的檔案鏈結:
 shareLinkButton = 分享鏈結
 # $name is the name of the file
 shareMessage = 使用 { -send-brand } 下載「{ $name }」: 簡單安全的檔案分享機制
-trailheadPromo = 有種方法可以保護您的隱私，加入 Firefox。
 learnMore = 了解更多。
