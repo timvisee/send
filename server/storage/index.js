@@ -14,6 +14,8 @@ class DB {
       Storage = require('./s3');
     } else if (config.gcs_bucket) {
       Storage = require('./gcs');
+    } else if (config.az_storage_url && config.az_storage_container) {
+      Storage = require('./az_blob');
     } else {
       Storage = require('./fs');
     }
