@@ -100,6 +100,7 @@ See the table below for the variables and their default values.
 | UI_CUSTOM_CSS | | Allows you to define a custom CSS file for custom styling |
 | CUSTOM_FOOTER_TEXT | | Allows you to define a custom footer |
 | CUSTOM_FOOTER_URL | | Allows you to define a custom URL in your footer |
+| TRY_SEND_URL | | Allows you to define a custom URL to link to after a successful download |
 
 Side note: If you define a custom URL and a custom footer, only the footer text will display, but will be hyperlinked to the URL.
 
