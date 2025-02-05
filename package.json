@@ -131,6 +131,8 @@
     "webpack-unassert-loader": "^1.2.0"
   },
   "dependencies": {
+    "@azure/identity": "^3.1.3",
+    "@azure/storage-blob": "^12.13.0",
     "@dannycoates/express-ws": "^5.0.3",
     "@fluent/bundle": "^0.17.1",
     "@fluent/langneg": "^0.6.2",
