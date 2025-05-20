@@ -43,7 +43,7 @@ function post(obj, bearerToken) {
     'Content-Type': 'application/json'
   };
   if (bearerToken) {
-    h['Authentication'] = `Bearer ${bearerToken}`;
+    h['Authorization'] = `Bearer ${bearerToken}`;
   }
   return {
     method: 'POST',
