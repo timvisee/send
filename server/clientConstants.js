@@ -11,6 +11,7 @@ module.exports = {
   WEB_UI: {
     FOOTER_DONATE_URL: config.footer_donate_url,
     FOOTER_CLI_URL: config.footer_cli_url,
+    FOOTER_THUNDERBIRD_ADDON_URL: config.footer_thunderbird_addon_url,
     FOOTER_DMCA_URL: config.footer_dmca_url,
     FOOTER_SOURCE_URL: config.footer_source_url,
     CUSTOM_FOOTER_TEXT: config.custom_footer_text,

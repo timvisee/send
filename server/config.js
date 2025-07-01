@@ -244,6 +244,11 @@ const conf = convict({
     default: 'https://github.com/timvisee/ffsend',
     env: 'SEND_FOOTER_CLI_URL'
   },
+  footer_thunderbird_addon_url: {
+    format: String,
+    default: 'https://addons.thunderbird.net/thunderbird/addon/filelink-provider-for-send/',
+    env: 'SEND_FOOTER_THUNDERBIRD_ADDON_URL'
+  },
   footer_dmca_url: {
     format: String,
     default: '',
