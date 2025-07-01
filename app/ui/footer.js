@@ -37,6 +37,15 @@ class Footer extends Component {
           </li>
         `);
       }
+      if (WEB_UI.FOOTER_THUNDERBIRD_ADDON_URL != '') {
+        links.push(html`
+          <li class="m-2">
+            <a href="${WEB_UI.FOOTER_THUNDERBIRD_ADDON_URL}" target="_blank">
+              ${translate('footerLinkThunderbirdAddon')}
+            </a>
+          </li>
+        `);
+      }
       if (WEB_UI.FOOTER_DMCA_URL != '') {
         links.push(html`
           <li class="m-2">

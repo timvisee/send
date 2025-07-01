@@ -29,6 +29,7 @@ deleteButtonHover = Delete
 footerText = Not affiliated with Mozilla or Firefox.
 footerLinkDonate = Donate
 footerLinkCli = CLI
+footerLinkThunderbirdAddon = Thunderbird Add-on
 footerLinkDmca = DMCA
 footerLinkSource = Source
 passwordTryAgain = Incorrect password. Try again.
