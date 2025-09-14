@@ -10,7 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // See: <https://stackoverflow.com/a/78005686/1000145>
 const crypto = require('crypto');
 const crypto_orig_createHash = crypto.createHash;
-crypto.createHash = algorithm =>
+crypto.createHash = (algorithm) =>
   crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm);
 
 const webJsOptions = {
@@ -21,26 +21,26 @@ const webJsOptions = {
       {
         bugfixes: true,
         useBuiltIns: 'entry',
-        corejs: 3
-      }
-    ]
+        corejs: 3,
+      },
+    ],
   ],
   plugins: [
     '@babel/plugin-syntax-dynamic-import',
     'module:nanohtml',
-    ['@babel/plugin-proposal-class-properties', { loose: false }]
-  ]
+    ['@babel/plugin-proposal-class-properties', { loose: false }],
+  ],
 };
 
 const serviceWorker = {
   target: 'webworker',
   entry: {
-    serviceWorker: './app/serviceWorker.js'
+    serviceWorker: './app/serviceWorker.js',
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   devtool: 'source-map',
   module: {
@@ -50,8 +50,8 @@ const serviceWorker = {
         loader: 'file-loader',
         options: {
           name: '[name].[contenthash:8].[ext]',
-          esModule: false
-        }
+          esModule: false,
+        },
       },
       {
         test: /\.svg$/,
@@ -60,8 +60,8 @@ const serviceWorker = {
             loader: 'file-loader',
             options: {
               name: '[name].[contenthash:8].[ext]',
-              esModule: false
-            }
+              esModule: false,
+            },
           },
           {
             loader: 'svgo-loader',
@@ -69,47 +69,48 @@ const serviceWorker = {
               plugins: [
                 {
                   name: 'removeViewBox',
-                  active: false // true causes stretched images
+                  active: false, // true causes stretched images
                 },
                 {
                   name: 'convertStyleToAttrs',
-                  active: true // for CSP, no unsafe-eval
+                  active: true, // for CSP, no unsafe-eval
                 },
                 {
                   name: 'removeTitle',
-                  active: true // for smallness
-                }
-              ]
-            }
-          }
-        ]
+                  active: true, // for smallness
+                },
+              ],
+            },
+          },
+        ],
       },
       {
         // loads all assets from assets/ for use by common/assets.js
         test: require.resolve('./common/generate_asset_map.js'),
-        use: ['babel-loader', 'val-loader']
-      }
-    ]
+        use: ['babel-loader', 'val-loader'],
+      },
+    ],
   },
-  plugins: [new webpack.IgnorePlugin(/\.\.\/dist/)]
+  plugins: [new webpack.IgnorePlugin(/\.\.\/dist/)],
 };
 
 const web = {
   target: 'web',
   entry: {
-    app: ['./app/main.js']
+    app: ['./app/main.js'],
     // android: ['./android/android.js'],
     // ios: ['./ios/ios.js']
   },
   output: {
     chunkFilename: '[name].[contenthash:8].js',
     filename: '[name].[contenthash:8].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         oneOf: [
           {
             loader: 'babel-loader',
@@ -120,12 +121,12 @@ const web = {
               // have different targets than their default configs
               path.resolve(
                 __dirname,
-                'node_modules/@dannycoates/webcrypto-liner'
+                'node_modules/@dannycoates/webcrypto-liner',
               ),
               path.resolve(__dirname, 'node_modules/@fluent'),
-              path.resolve(__dirname, 'node_modules/intl-pluralrules')
+              path.resolve(__dirname, 'node_modules/intl-pluralrules'),
             ],
-            options: webJsOptions
+            options: webJsOptions,
           },
           {
             // Strip asserts from our deps, mainly choojs family
@@ -135,19 +136,19 @@ const web = {
               path.resolve(__dirname, 'node_modules/@fluent'),
               path.resolve(__dirname, 'node_modules/@sentry'),
               path.resolve(__dirname, 'node_modules/tslib'),
-              path.resolve(__dirname, 'node_modules/webcrypto-core')
+              path.resolve(__dirname, 'node_modules/webcrypto-core'),
             ],
-            loader: 'webpack-unassert-loader'
-          }
-        ]
+            loader: 'webpack-unassert-loader',
+          },
+        ],
       },
       {
         test: /\.(png|jpg)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[contenthash:8].[ext]',
-          esModule: false
-        }
+          esModule: false,
+        },
       },
       {
         test: /\.svg$/,
@@ -156,8 +157,8 @@ const web = {
             loader: 'file-loader',
             options: {
               name: '[name].[contenthash:8].[ext]',
-              esModule: false
-            }
+              esModule: false,
+            },
           },
           {
             loader: 'svgo-loader',
@@ -165,24 +166,24 @@ const web = {
               plugins: [
                 {
                   name: 'cleanupIDs',
-                  active: false
+                  active: false,
                 },
                 {
                   name: 'removeViewBox',
-                  active: false // true causes stretched images
+                  active: false, // true causes stretched images
                 },
                 {
                   name: 'convertStyleToAttrs',
-                  active: true // for CSP, no unsafe-eval
+                  active: true, // for CSP, no unsafe-eval
                 },
                 {
                   name: 'removeTitle',
-                  active: true // for smallness
-                }
-              ]
-            }
-          }
-        ]
+                  active: true, // for smallness
+                },
+              ],
+            },
+          },
+        ],
       },
       {
         // creates style.css with all styles
@@ -193,51 +194,49 @@ const web = {
               loader: 'css-loader',
               options: {
                 importLoaders: 1,
-                esModule: false
-              }
+                esModule: false,
+              },
             },
-            'postcss-loader'
-          ]
-        })
+            'postcss-loader',
+          ],
+        }),
       },
       {
         test: /\.ftl$/,
-        use: 'raw-loader'
+        use: 'raw-loader',
       },
       {
         // creates test.js for /test
         test: require.resolve('./test/frontend/index.js'),
-        use: ['babel-loader', 'val-loader']
+        use: ['babel-loader', 'val-loader'],
       },
       {
         // loads all assets from assets/ for use by common/assets.js
         test: require.resolve('./common/generate_asset_map.js'),
-        use: ['babel-loader', 'val-loader']
-      }
-    ]
+        use: ['babel-loader', 'val-loader'],
+      },
+    ],
   },
   plugins: [
     new CopyPlugin({
       patterns: [
         {
           context: 'public',
-          from: '*.*'
-        }
-      ]
+          from: '*.*',
+        },
+      ],
     }),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.IgnorePlugin(/\.\.\/dist/), // used in common/*.js
     new ExtractTextPlugin({
-      filename: '[name].[md5:contenthash:8].css'
+      filename: '[name].[md5:contenthash:8].css',
     }),
     new VersionPlugin(), // used for the /__version__ route
     new AndroidIndexPlugin(),
-    new ManifestPlugin() // used by server side to resolve hashed assets
+    new ManifestPlugin(), // used by server side to resolve hashed assets
   ],
   devtool: 'source-map',
   devServer: {
-    before:
-      process.env.NODE_ENV === 'development' && require('./server/bin/dev'),
     compress: true,
     hot: false,
     host: '0.0.0.0',
@@ -245,10 +244,20 @@ const web = {
       '/api/ws': {
         target: 'ws://localhost:8081',
         ws: true,
-        secure: false
-      }
-    }
-  }
+        secure: false,
+      },
+    },
+    setupMiddlewares: (middlewares, devServer) => {
+      if (!devServer) throw new Error('webpack-dev-server is not defined');
+      require('./server/bin/dev')(devServer.app, devServer);
+      return middlewares;
+    },
+    devMiddleware: {
+      // keep existing options you have here
+      writeToDisk: (filePath) =>
+        /(?:^|\/)(manifest\.json|version\.json)$/.test(filePath),
+    },
+  },
 };
 
 module.exports = (env, argv) => {
