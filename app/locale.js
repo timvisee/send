@@ -9,11 +9,15 @@ function makeBundle(locale, ftl) {
 export async function getTranslator(locale) {
   const bundles = [];
   const { default: en } = await import('../public/locales/en-US/send.ftl');
-  if (locale !== 'en-US') {
-    const { default: ftl } = await import(
-      `../public/locales/${locale}/send.ftl`
-    );
-    bundles.push(makeBundle(locale, ftl));
+  try {
+    if (locale !== 'en-US') {
+      const { default: ftl } = await import(
+        `../public/locales/${locale}/send.ftl`
+      );
+      bundles.push(makeBundle(locale, ftl));
+    }
+  } catch {
+    console.warn(`Locale ${locale} not found. Using en-US as fallback.`);
   }
   bundles.push(makeBundle('en-US', en));
   return function(id, data) {
