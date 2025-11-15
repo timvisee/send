@@ -214,6 +214,15 @@ function archiveDetails(translate, archive) {
 }
 
 module.exports = function(state, emit, archive) {
+  const link = html`
+    <input 
+          type="text" 
+          id="share-url" 
+          value="${archive.url}"
+          readonly="readonly"
+          class="block w-full my-4 border-default rounded-lg leading-loose h-12 px-2 py-1 dark:bg-grey-80"
+    >
+  `;
   const copyOrShare =
     state.capabilities.share || platform() === 'android'
       ? html`
@@ -281,6 +290,7 @@ module.exports = function(state, emit, archive) {
       </div>
       ${archiveDetails(state.translate, archive)}
       <hr class="w-full border-t my-4 dark:border-grey-70" />
+      ${link}
       <div class="flex justify-between w-full">
         ${dl} ${copyOrShare}
       </div>

@@ -1,0 +1,27 @@
+services:
+  send-redis:
+    image: redis:alpine
+    restart: always
+    expose:
+      - "6379"
+    networks:
+      - net-send
+  send-web:
+    user: node
+    build: .
+    ports:
+      - "80:1443"
+    depends_on:
+      - send-redis
+    networks:
+      - net-send
+    environment:
+      - NODE_ENV=production
+      - BASE_URL=http://localhost
+      - FILE_DIR=/app/uploads
+      - REDIS_HOST=send-redis
+      - REDIS_PORT=6379
+
+networks:
+  net-send:
+    driver: bridge
