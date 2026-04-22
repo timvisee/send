@@ -82,6 +82,16 @@ const conf = convict({
     default: 64,
     env: 'MAX_FILES_PER_ARCHIVE'
   },
+  archive_name_prefix: {
+    format: String,
+    default: 'Send-Archive',
+    env: 'ARCHIVE_NAME_PREFIX'
+  },
+  archive_name_template: {
+    format: String,
+    default: '{prefix}',
+    env: 'ARCHIVE_NAME_TEMPLATE'
+  },
   max_archives_per_user: {
     format: Number,
     default: 16,
