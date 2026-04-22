@@ -52,7 +52,13 @@ if (process.env.NODE_ENV === 'production') {
     DEFAULTS,
     WEB_UI,
     PREFS,
-    archive: new Archive([], DEFAULTS.EXPIRE_SECONDS, DEFAULTS.DOWNLOADS),
+    archive: new Archive(
+      [],
+      DEFAULTS.EXPIRE_SECONDS,
+      DEFAULTS.DOWNLOADS,
+      DEFAULTS.ARCHIVE_NAME_PREFIX,
+      DEFAULTS.ARCHIVE_NAME_TEMPLATE
+    ),
     capabilities,
     translate,
     storage,

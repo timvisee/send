@@ -30,6 +30,8 @@ module.exports = {
     DOWNLOADS: config.default_downloads,
     DOWNLOAD_COUNTS: config.download_counts,
     EXPIRE_TIMES_SECONDS: config.expire_times_seconds,
-    EXPIRE_SECONDS: config.default_expire_seconds
+    EXPIRE_SECONDS: config.default_expire_seconds,
+    ARCHIVE_NAME_PREFIX: config.archive_name_prefix,
+    ARCHIVE_NAME_TEMPLATE: config.archive_name_template
   }
 };

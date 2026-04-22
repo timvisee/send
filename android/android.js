@@ -80,7 +80,9 @@ function body(main) {
     state.archive = new Archive(
       [],
       DEFAULTS.EXPIRE_SECONDS,
-      DEFAULTS.DOWNLOADS
+      DEFAULTS.DOWNLOADS,
+      DEFAULTS.ARCHIVE_NAME_PREFIX,
+      DEFAULTS.ARCHIVE_NAME_TEMPLATE
     );
     state.storage = storage;
     state.user = new User(storage, LIMITS);

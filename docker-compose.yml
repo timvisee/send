@@ -8,6 +8,18 @@ services:
       - "1443:1443"
     environment:
       - REDIS_HOST=redis
+      # Archive name for multi-file uploads. Default: "Send-Archive.zip"
+      # Placeholders:
+      #   {prefix}   - ARCHIVE_NAME_PREFIX
+      #   {filename} - first file's basename (sanitized)
+      #   {date}     - YYYY-MM-DD          {datetime} - YYYY-MM-DD-HHMM
+      #   {yyyy} {yy} {mm} {dd} {hh} {mi} {ss} - individual date/time parts
+      # Examples:
+      #   {prefix}_{yyyy}{mm}{dd}          -> Send-Archive_20260422.zip
+      #   {prefix}_{yy}_{mm}_{dd}          -> Send-Archive_26_04_22.zip
+      #   {prefix}_{date}_{hh}{mi}{ss}     -> Send-Archive_2026-04-22_143205.zip
+      # - ARCHIVE_NAME_PREFIX=Send-Archive
+      # - ARCHIVE_NAME_TEMPLATE={prefix}_{datetime}
   redis:
     image: redis:alpine
   selenium-firefox:
