@@ -122,7 +122,7 @@ body {
   @apply bg-primary;
   @apply border-primary;
 
-  background-image: url('../assets/lock.svg');
+  background-image: url('../assets/check.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
@@ -136,7 +136,7 @@ body {
   @apply bg-primary;
   @apply border-primary;
 
-  background-image: url('../assets/lock.svg');
+  background-image: url('../assets/check.svg');
   background-position: center;
   background-size: 1.25rem;
   background-repeat: no-repeat;
