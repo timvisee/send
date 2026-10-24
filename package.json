@@ -129,7 +129,6 @@
     "webpack-unassert-loader": "^1.2.0"
   },
   "dependencies": {
-    "@dannycoates/express-ws": "^5.0.3",
     "@dotenvx/dotenvx": "^1.52.0",
     "@fluent/bundle": "^0.17.1",
     "@fluent/langneg": "^0.6.2",
@@ -142,6 +141,7 @@
     "convict": "^6.2.4",
     "convict-format-with-validator": "^6.2.0",
     "express": "^4.17.3",
+    "express-ws": "^5.0.2",
     "generate-password": "^1.7.1",
     "helmet": "^3.23.3",
     "mozlog": "^3.0.1",
