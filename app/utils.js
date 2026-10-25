@@ -37,11 +37,14 @@ function isFile(id) {
   return /^[0-9a-fA-F]{10,16}$/.test(id);
 }
 
-function copyToClipboard(str) {
+function legacyCopyToClipboard(str) {
   const aux = document.createElement('input');
   aux.setAttribute('value', str);
   aux.contentEditable = true;
-  aux.readOnly = true;
+  // `readOnly` must stay false, otherwise iOS refuses the selection/copy
+  aux.readOnly = false;
+  aux.style.position = 'absolute';
+  aux.style.left = '-9999px';
   document.body.appendChild(aux);
   if (navigator.userAgent.match(/iphone|ipad|ipod/i)) {
     const range = document.createRange();
@@ -56,6 +59,22 @@ function copyToClipboard(str) {
   const result = document.execCommand('copy');
   document.body.removeChild(aux);
   return result;
+}
+
+function copyToClipboard(str) {
+  // Async Clipboard API: works on modern iOS/Android Safari & Chrome, requires a
+  // secure context (https). `execCommand('copy')` is the fallback for old
+  // browsers and non-secure contexts.
+  if (
+    navigator.clipboard &&
+    typeof navigator.clipboard.writeText === 'function' &&
+    window.isSecureContext
+  ) {
+    return navigator.clipboard.writeText(str).catch(() => {
+      legacyCopyToClipboard(str);
+    });
+  }
+  return Promise.resolve(legacyCopyToClipboard(str));
 }
 
 const LOCALIZE_NUMBERS = !!(
