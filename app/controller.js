@@ -1,5 +1,6 @@
 import FileReceiver from './fileReceiver';
 import FileSender from './fileSender';
+import confirmDeleteDialog from './ui/confirmDeleteDialog';
 import copyDialog from './ui/copyDialog';
 import faviconProgressbar from './ui/faviconProgressbar';
 import okDialog from './ui/okDialog';
@@ -31,6 +32,15 @@ export default function(state, emitter) {
     }
     faviconProgressbar.updateFavicon(state.transfer.progressRatio);
     render();
+  }
+
+  async function deleteFile(ownedFile) {
+    try {
+      state.storage.remove(ownedFile.id);
+      await ownedFile.del();
+    } catch (e) {
+      state.sentry.captureException(e);
+    }
   }
 
   emitter.on('DOMContentLoaded', () => {
@@ -65,12 +75,17 @@ export default function(state, emitter) {
   });
 
   emitter.on('delete', async ownedFile => {
-    try {
-      state.storage.remove(ownedFile.id);
-      await ownedFile.del();
-    } catch (e) {
-      state.sentry.captureException(e);
+    if (state.WEB_UI.SHOW_DELETE_CONFIRM) {
+      state.modal = confirmDeleteDialog(ownedFile);
+    } else {
+      await deleteFile(ownedFile);
     }
+
+    render();
+  });
+
+  emitter.on('confirmedDelete', async ownedFile => {
+    await deleteFile(ownedFile);
     render();
   });
 

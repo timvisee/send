@@ -224,6 +224,11 @@ const conf = convict({
     default: '',
     env: 'FXA_CSP_PROFILEIMAGE_URL'
   },
+  show_delete_confirm: {
+    format: Boolean,
+    default: false,
+    env: 'SHOW_DELETE_CONFIRM'
+  },
   survey_url: {
     format: String,
     default: '',
