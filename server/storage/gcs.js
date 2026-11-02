@@ -18,13 +18,18 @@ class GCSStorage {
 
   set(id, file) {
     return new Promise((resolve, reject) => {
+      const fstream = this.bucket.file(id).createWriteStream({
+        validation: false,
+        resumable: true
+      });
+      // A failed or cancelled upload errors the source stream. Stop the
+      // resumable upload so nothing is stored.
+      file.on('error', err => {
+        fstream.destroy(err);
+        reject(err);
+      });
       file
-        .pipe(
-          this.bucket.file(id).createWriteStream({
-            validation: false,
-            resumable: true
-          })
-        )
+        .pipe(fstream)
         .on('error', reject)
         .on('finish', resolve);
     });

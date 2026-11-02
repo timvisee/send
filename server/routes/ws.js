@@ -12,10 +12,18 @@ const log = mozlog('send.upload');
 
 module.exports = function(ws, req) {
   let fileStream;
+  let eofReceived = false;
+  let cancelled = false;
 
-  ws.on('close', e => {
-    if (e !== 1000 && fileStream !== undefined) {
-      fileStream.destroy();
+  ws.on('close', () => {
+    if (eofReceived) {
+      return;
+    }
+    // The client went away before sending the whole file. Error the stream so
+    // the storage backend aborts the upload and cleans up what it stored.
+    cancelled = true;
+    if (fileStream !== undefined) {
+      fileStream.destroy(new Error('Upload cancelled'));
     }
   });
 
@@ -30,6 +38,9 @@ module.exports = function(ws, req) {
       const metadata = fileInfo.fileMetadata;
       const auth = fileInfo.authorization;
       const user = await fxa.verify(fileInfo.bearer);
+      if (cancelled) {
+        return;
+      }
       const maxFileSize = config.max_file_size;
       const maxExpireSeconds = config.max_expire_seconds;
       const maxDownloads = config.max_downloads;
@@ -78,6 +89,7 @@ module.exports = function(ws, req) {
       const eof = new Transform({
         transform: function(chunk, encoding, callback) {
           if (chunk.length === 1 && chunk[0] === 0) {
+            eofReceived = true;
             this.push(null);
           } else {
             this.push(chunk);
@@ -91,18 +103,15 @@ module.exports = function(ws, req) {
 
       await storage.set(newId, fileStream, meta, timeLimit);
 
+      // The client may have left after sending the whole file, in which case
+      // the upload is complete but there is nobody left to tell.
       if (ws.readyState === 1) {
-        // if the socket is closed by a cancelled upload the stream
-        // ends without an error so we need to check the state
-        // before sending a reply.
-
-        // TODO: we should handle cancelled uploads differently
-        // in order to avoid having to check socket state and clean
-        // up storage, possibly with an exception that we can catch.
         ws.send(JSON.stringify({ ok: true }));
       }
     } catch (e) {
-      log.error('upload', e);
+      if (!cancelled) {
+        log.error('upload', e);
+      }
       if (ws.readyState === 1) {
         ws.send(
           JSON.stringify({
