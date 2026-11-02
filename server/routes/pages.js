@@ -1,6 +1,12 @@
+const nanotiming = require('nanotiming');
 const routes = require('../../app/routes');
 const storage = require('../storage');
 const state = require('../state');
+
+// choo times every render with nanotiming, which in Node adds entries to the
+// global performance timeline that are never cleared. Nothing reads them on the
+// server, and they leak heap on every rendered page until we run out of memory.
+nanotiming.disabled = true;
 
 function stripEvents(str) {
   // For CSP we need to remove all the event handler placeholders.
