@@ -1,6 +1,9 @@
 import { arrayToB64, b64ToArray, delay } from './utils';
 import { ECE_RECORD_SIZE } from './ece';
 
+// Max bytes queued on the upload WebSocket before the send loop waits (8 MB).
+const MAX_WS_BUFFERED = ECE_RECORD_SIZE * 128;
+
 let fileProtocolWssUrl = null;
 try {
   fileProtocolWssUrl = localStorage.getItem('wssURL');
@@ -232,15 +235,17 @@ async function upload(
       }
       const buf = state.value;
       ws.send(buf);
-      onprogress(size);
       size += buf.length;
+      // Report bytes actually sent, not bytes still queued on the socket.
+      onprogress(Math.max(0, size - ws.bufferedAmount));
       state = await reader.read();
       while (
-        ws.bufferedAmount > ECE_RECORD_SIZE * 2 &&
+        ws.bufferedAmount > MAX_WS_BUFFERED &&
         ws.readyState === WebSocket.OPEN &&
         !canceller.cancelled
       ) {
-        await delay();
+        await delay(5);
+        onprogress(Math.max(0, size - ws.bufferedAmount));
       }
     }
     if (ws.readyState === WebSocket.OPEN) {
