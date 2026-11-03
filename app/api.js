@@ -235,12 +235,16 @@ async function upload(
       onprogress(size);
       size += buf.length;
       state = await reader.read();
+      // 2 records in flight plus a 100ms sleep caps uploads at ~1.3MB/s (~10Mbps) no matter how
+      // fast the link is: the socket drains in a few ms, then sits idle for the rest of the sleep
+      // because nothing is queued while we wait. 4MiB in flight and a 5ms sleep makes this
+      // network/disk bound instead. refs: https://github.com/timvisee/send/issues/112
       while (
-        ws.bufferedAmount > ECE_RECORD_SIZE * 2 &&
+        ws.bufferedAmount > ECE_RECORD_SIZE * 64 &&
         ws.readyState === WebSocket.OPEN &&
         !canceller.cancelled
       ) {
-        await delay();
+        await delay(5);
       }
     }
     if (ws.readyState === WebSocket.OPEN) {
